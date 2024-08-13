@@ -1,4 +1,4 @@
-package video.videoservice;
+package videoservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

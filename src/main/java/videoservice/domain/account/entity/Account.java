@@ -27,6 +27,7 @@ public class Account extends BaseEntity {
 
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private LocalDate birthDate;
