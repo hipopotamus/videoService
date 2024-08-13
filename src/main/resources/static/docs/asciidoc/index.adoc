@@ -24,3 +24,19 @@ include::{snippets}/login/http-response.adoc[]
 
 response-headers
 include::{snippets}/login/response-headers.adoc[]
+
+=== 계정 추가
+.curl-request
+include::{snippets}/accountAdd/curl-request.adoc[]
+
+.http-request
+include::{snippets}/accountAdd/http-request.adoc[]
+
+.request-fields
+include::{snippets}/accountAdd/request-fields.adoc[]
+
+.http-response
+include::{snippets}/accountAdd/http-response.adoc[]
+
+.response-fields
+include::{snippets}/accountAdd/response-fields.adoc[]
