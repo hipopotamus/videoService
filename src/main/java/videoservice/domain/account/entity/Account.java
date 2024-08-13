@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import videoservice.global.auditing.BaseEntity;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -34,4 +35,9 @@ public class Account extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public void modify(Account account) {
+        Optional.ofNullable(account.getNickname()).ifPresent(nickname -> this.nickname = nickname);
+        Optional.ofNullable(account.getPassword()).ifPresent(password -> this.password = password);
+    }
 }

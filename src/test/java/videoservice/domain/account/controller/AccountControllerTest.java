@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.dto.AccountAddRequest;
+import videoservice.domain.account.dto.AccountModifyRequest;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.entity.Gender;
 import videoservice.domain.account.repository.AccountRepository;
@@ -27,6 +28,7 @@ import java.util.List;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -115,8 +117,8 @@ class AccountControllerTest {
         // when
         ResultActions actions = mockMvc.perform(
                 post("/accounts")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -176,6 +178,50 @@ class AccountControllerTest {
                                 fieldWithPath("gender").description("성별"),
                                 fieldWithPath("birthDate").description("생년월일"),
                                 fieldWithPath("createdAt").description("계정 생성 일시")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("계정 수정_성공")
+    void accountModify_Success() throws Exception {
+        // given
+        Long accountId = 10001L;
+        Account account = accountRepository.findById(accountId).get();
+        String jwt = "Bearer " + jwtProcessor.createAuthJwtToken(new UserAccount(account));
+
+        AccountModifyRequest accountModifyRequest = AccountModifyRequest.builder()
+                .nickname("newNickname")
+                .password("newPassword123")
+                .build();
+
+        String content = gson.toJson(accountModifyRequest);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                put("/accounts")
+                        .header("Authorization", jwt)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andDo(document("accountModify",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT").attributes(key("constraints").value("JWT Form"))
+                        ),
+                        requestFields(
+                                fieldWithPath("nickname").description("새 닉네임").attributes(key("constraints").value("NotBlank, Length(min=2, max=20)")).optional(),
+                                fieldWithPath("password").description("새 비밀번호").attributes(key("constraints").value("NotBlank, Length(min=8, max=30)")).optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("수정된 계정의 ID")
                         )
                 ));
     }

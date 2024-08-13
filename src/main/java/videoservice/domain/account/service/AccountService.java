@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.dto.AccountAddRequest;
 import videoservice.domain.account.dto.AccountDetailResponse;
+import videoservice.domain.account.dto.AccountModifyRequest;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
 import videoservice.global.dto.IdDto;
@@ -22,23 +23,33 @@ public class AccountService {
 
     @Transactional
     public IdDto addAccount(AccountAddRequest accountAddRequest) {
-
         verifyDuplicateEmail(accountAddRequest.getEmail());
         verifyDuplicateNickname(accountAddRequest.getNickname());
 
-        String encodedPassword = bCryptPasswordEncoder.encode(accountAddRequest.getPassword());
-        Account account = accountAddRequest.toAccount(encodedPassword);
+        Account account = getAccountForAdd(accountAddRequest);
         Account savedAccount = accountRepository.save(account);
 
         return new IdDto(savedAccount.getId());
     }
 
     public AccountDetailResponse findProfile(Long accountId) {
-
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
         return AccountDetailResponse.of(account);
+    }
+
+    @Transactional
+    public IdDto modifyAccount(Long accountId, AccountModifyRequest accountModifyRequest) {
+        verifyDuplicateNickname(accountModifyRequest.getNickname());
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
+
+        Account modifyAccountParameter = getAccountForModify(accountModifyRequest);
+        account.modify(modifyAccountParameter);
+
+        return new IdDto(account.getId());
     }
 
     private void verifyDuplicateEmail(String email) {
@@ -55,5 +66,20 @@ public class AccountService {
                 throw new BusinessLogicException(ExceptionCode.DUPLICATION_NICKNAME);
             }
         }
+    }
+
+    private Account getAccountForAdd(AccountAddRequest accountAddRequest) {
+        String encodedPassword = bCryptPasswordEncoder.encode(accountAddRequest.getPassword());
+
+        return accountAddRequest.toAccount(encodedPassword);
+    }
+
+    private Account getAccountForModify(AccountModifyRequest accountModifyRequest) {
+        String encodedPassword = null;
+        if (accountModifyRequest.getPassword() != null) {
+            encodedPassword = bCryptPasswordEncoder.encode(accountModifyRequest.getPassword());
+        }
+
+        return accountModifyRequest.toAccount(encodedPassword);
     }
 }
