@@ -40,3 +40,19 @@ include::{snippets}/accountAdd/http-response.adoc[]
 
 .response-fields
 include::{snippets}/accountAdd/response-fields.adoc[]
+
+=== 프로필 상세 정보 조회
+.curl-request
+include::{snippets}/profileDetails/curl-request.adoc[]
+
+.http-request
+include::{snippets}/profileDetails/http-request.adoc[]
+
+.request-headers
+include::{snippets}/profileDetails/request-headers.adoc[]
+
+.http-response
+include::{snippets}/profileDetails/http-response.adoc[]
+
+.response-fields
+include::{snippets}/profileDetails/response-fields.adoc[]

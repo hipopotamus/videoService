@@ -14,17 +14,23 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.dto.AccountAddRequest;
+import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.entity.Gender;
+import videoservice.domain.account.repository.AccountRepository;
+import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.dto.LoginDto;
+import videoservice.global.security.jwt.JwtProcessor;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,6 +49,12 @@ class AccountControllerTest {
 
     @Autowired
     private Gson gson;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private JwtProcessor jwtProcessor;
 
     @Test
     @DisplayName("로그인_성공")
@@ -124,6 +136,46 @@ class AccountControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("id").description("생성된 계정의 ID")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("프로필 상세 정보 조회_성공")
+    void profileDetails_Success() throws Exception {
+        // given
+        Long accountId = 10001L;
+        Account account = accountRepository.findById(accountId).get();
+        String jwt = "Bearer " + jwtProcessor.createAuthJwtToken(new UserAccount(account));
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/accounts")
+                        .header("Authorization", jwt)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").isNotEmpty())
+                .andExpect(jsonPath("$.nickname").isNotEmpty())
+                .andExpect(jsonPath("$.gender").isNotEmpty())
+                .andExpect(jsonPath("$.birthDate").isNotEmpty())
+                .andExpect(jsonPath("$.createdAt").isNotEmpty())
+                .andDo(document("profileDetails",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                List.of(
+                                        headerWithName("Authorization").description("JWT").attributes(key("constraints").value("JWT Form"))
+                                )
+                        ),
+                        responseFields(
+                                fieldWithPath("email").description("이메일 주소"),
+                                fieldWithPath("nickname").description("닉네임"),
+                                fieldWithPath("gender").description("성별"),
+                                fieldWithPath("birthDate").description("생년월일"),
+                                fieldWithPath("createdAt").description("계정 생성 일시")
                         )
                 ));
     }

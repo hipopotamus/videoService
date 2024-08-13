@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.dto.AccountAddRequest;
+import videoservice.domain.account.dto.AccountDetailResponse;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
 import videoservice.global.dto.IdDto;
@@ -30,6 +31,14 @@ public class AccountService {
         Account savedAccount = accountRepository.save(account);
 
         return new IdDto(savedAccount.getId());
+    }
+
+    public AccountDetailResponse findProfile(Long accountId) {
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
+
+        return AccountDetailResponse.of(account);
     }
 
     private void verifyDuplicateEmail(String email) {

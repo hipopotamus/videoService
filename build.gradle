@@ -41,6 +41,7 @@ dependencies {
     //utility
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation group: 'com.google.code.gson', name: 'gson'
 
     //db
