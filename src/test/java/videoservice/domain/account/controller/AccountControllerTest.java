@@ -27,16 +27,14 @@ import java.util.List;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static videoservice.utility.ApiDocumentUtils.getRequestPreProcessor;
 import static videoservice.utility.ApiDocumentUtils.getResponsePreProcessor;
 
@@ -88,8 +86,8 @@ class AccountControllerTest {
                         getResponsePreProcessor(),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("email").description("이메일"),
-                                        fieldWithPath("password").description("비밀번호")
+                                        fieldWithPath("email").description("이메일").attributes(key("constraints").value("none")),
+                                        fieldWithPath("password").description("비밀번호").attributes(key("constraints").value("none"))
                                 )
                         ),
                         responseHeaders(
@@ -222,6 +220,33 @@ class AccountControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("id").description("수정된 계정의 ID")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("계정 삭제_성공")
+    void accountDelete_Success() throws Exception {
+        // given
+        Long accountId = 10001L;
+        Account account = accountRepository.findById(accountId).get();
+        String jwt = "Bearer " + jwtProcessor.createAuthJwtToken(new UserAccount(account));
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete("/accounts")
+                        .header("Authorization", jwt)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(content().string("Account deleted"))
+                .andDo(document("accountDelete",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT").attributes(key("constraints").value("JWT Form"))
                         )
                 ));
     }

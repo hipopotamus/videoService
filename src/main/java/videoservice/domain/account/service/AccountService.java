@@ -52,6 +52,14 @@ public class AccountService {
         return new IdDto(account.getId());
     }
 
+    @Transactional
+    public void deleteAccount(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
+
+        account.softDelete();
+    }
+
     private void verifyDuplicateEmail(String email) {
         if (email != null) {
             if (accountRepository.existsByEmail(email)) {

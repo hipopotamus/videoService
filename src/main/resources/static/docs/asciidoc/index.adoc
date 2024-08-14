@@ -75,3 +75,16 @@ include::{snippets}/accountModify/http-response.adoc[]
 
 .response-fields
 include::{snippets}/accountModify/response-fields.adoc[]
+
+=== 계정 삭제
+.curl-request
+include::{snippets}/accountDelete/curl-request.adoc[]
+
+.http-request
+include::{snippets}/accountDelete/http-request.adoc[]
+
+.request-headers
+include::{snippets}/accountDelete/request-headers.adoc[]
+
+.http-response
+include::{snippets}/accountDelete/http-response.adoc[]
