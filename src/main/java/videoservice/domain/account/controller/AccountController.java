@@ -1,6 +1,5 @@
 package videoservice.domain.account.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import videoservice.domain.account.dto.AccountAddRequest;
 import videoservice.domain.account.dto.AccountDetailResponse;
 import videoservice.domain.account.dto.AccountModifyRequest;
-import videoservice.domain.account.repository.AccountRepository;
 import videoservice.domain.account.service.AccountService;
 import videoservice.global.argumentresolver.LoginId;
 import videoservice.global.dto.IdDto;

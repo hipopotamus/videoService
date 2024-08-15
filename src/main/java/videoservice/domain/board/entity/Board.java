@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.video.entity.Video;
 import videoservice.global.auditing.BaseEntity;
+import videoservice.global.jpa.converter.StringLongListConverter;
+import videoservice.global.jpa.converter.StringStringListConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,7 +44,9 @@ public class Board extends BaseEntity {
 
     private Long totalPlayTime;
 
-    private String adURLs;
+    @Convert(converter = StringStringListConverter.class)
+    private List<String> adURLs = new ArrayList<>();
 
-    private String adTimes;
+    @Convert(converter = StringLongListConverter.class)
+    private List<String> adTimes = new ArrayList<>();
 }
