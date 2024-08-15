@@ -8,23 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import videoservice.global.auditing.BaseEntity;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdVideo extends BaseEntity {
+public class TotalWeight {
 
     @Id
     @GeneratedValue
-    @Column(name = "adVideo_id")
+    @Column(name = "totalWeight_id")
     private Long id;
 
-    private String url;
-
-    private String advertiser;
-
-    private Long weight;
+    Long totalWeight;
 }

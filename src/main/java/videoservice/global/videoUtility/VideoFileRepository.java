@@ -1,4 +1,4 @@
-package videoservice.domain.video.repository;
+package videoservice.global.videoUtility;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;

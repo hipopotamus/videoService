@@ -7,9 +7,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -50,5 +55,21 @@ public class VideoFileController {
                 .header("Accept-Ranges", "bytes")
                 .eTag(path)
                 .body(region);
+    }
+
+    @GetMapping("/ad/{adVideoName}")
+    public ResponseEntity<Resource> adVideoDetails (@PathVariable String adVideoName) throws IOException {
+
+        FileSystemResource resource = new FileSystemResource(path + adVideoName);
+        HttpHeaders headers = new HttpHeaders();
+        String mimeType = Files.probeContentType(Paths.get(path + adVideoName));
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s", adVideoName));
+        headers.setContentType(MediaType.parseMediaType(mimeType));
+
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }

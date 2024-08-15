@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.video.dto.VideoAddRequest;
 import videoservice.domain.video.entity.Video;
 import videoservice.domain.video.repository.VideoRepository;
-import videoservice.domain.video.utility.VideoUtility;
+import videoservice.global.videoUtility.VideoUtility;
 import videoservice.global.dto.IdDto;
 
 import java.io.IOException;

@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
-import videoservice.domain.video.utility.VideoUtility;
+import videoservice.global.videoUtility.VideoUtility;
 import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.jwt.JwtProcessor;
 
