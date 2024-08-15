@@ -32,6 +32,8 @@ spring:
 
 dir : /Users/hipo/Desktop/project/toy_project/video/videoservice/src/main/resources/video/
 
+ffmpeg : /opt/homebrew/Cellar/ffmpeg/7.0.2
+
 #eureka:
 #  instance:
 #    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
