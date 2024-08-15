@@ -6,7 +6,7 @@
 <body>
 <h1>Video Streaming</h1>
 <video width="600" controls>
-    <source th:src="@{/videoFiles/{videoName}(videoName=${videoName})}" type="video/mp4">
+    <source th:src="@{/videoFiles/stream/{videoName}(videoName=${videoName})}" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 </body>
