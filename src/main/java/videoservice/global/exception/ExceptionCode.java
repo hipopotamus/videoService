@@ -15,7 +15,9 @@ public enum ExceptionCode {
     FORBIDDEN(403, "잘못된 접근입니다.", "007"),
     NOT_FOUND_BOARD(404, "게시글을 찾을 수 없습니다.", "008"),
     UPLOAD_FAILED(500, "파일을 업로드하는데 실패했습니다.", "009"),
-    DUPLICATION_NICKNAME(400, "동일한 닉네임의 계정이 존재합니다.", "010");
+    DUPLICATION_NICKNAME(400, "동일한 닉네임의 계정이 존재합니다.", "010"),
+    EMPTY_FILE(400, "파일이 비어있습니다.", "011"),
+    ILLEGAL_FILENAME(400, "잘못된 형식의 파일 이름입니다.", "012");
 
     private int status;
 

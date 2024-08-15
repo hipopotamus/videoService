@@ -30,6 +30,7 @@ spring:
         default-page-size: 10
         one-indexed-parameters: true
 
+dir : /Users/hipo/Desktop/project/toy_project/video/videoservice/src/main/resources/video/
 
 #eureka:
 #  instance:
