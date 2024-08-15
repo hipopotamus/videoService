@@ -1,0 +1,4 @@
+pre code {
+    background: #f8f8f8 !important; /* 밝은 배경색 */
+    color: #333 !important;         /* 어두운 텍스트 색상 */
+}

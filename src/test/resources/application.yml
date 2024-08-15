@@ -30,6 +30,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
 
+dir : /Users/hipo/Desktop/project/toy_project/video/videoservice/src/test/resources/video/
 
 #eureka:
 #  instance:

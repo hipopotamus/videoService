@@ -1,9 +1,9 @@
 = VideoService
 :sectnums:
 :toc: left
-:toclevels: 4
+:toclevels: 2
 :toc-title: Table of Contents
-:source-highlighter: rouge
+:source-highlighter: highlightjs
 
 v1.0.0, 2024.08.13
 
@@ -88,3 +88,17 @@ include::{snippets}/accountDelete/request-headers.adoc[]
 
 .http-response
 include::{snippets}/accountDelete/http-response.adoc[]
+
+== VideoFileController
+=== 비디오 스트리밍
+.curl-request
+include::{snippets}/videoStream/curl-request.adoc[]
+
+.http-request
+include::{snippets}/videoStream/http-request.adoc[]
+
+.request-headers
+include::{snippets}/videoStream/request-headers.adoc[]
+
+.http-response
+include::{snippets}/videoStream/http-response.adoc[]
