@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/accounts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/accounts").permitAll()
                         .requestMatchers(HttpMethod.GET, "/videoFiles/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/view/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

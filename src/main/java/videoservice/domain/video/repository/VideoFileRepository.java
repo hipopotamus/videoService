@@ -17,7 +17,7 @@ public class VideoFileRepository implements FileRepository {
         String fullPath = path + fileName;
         image.transferTo(new File(fullPath));
 
-        return "http://localhost:8080/image-files/" + fileName;
+        return "http://localhost:8080/videoFiles/" + fileName;
     }
 
     @Override

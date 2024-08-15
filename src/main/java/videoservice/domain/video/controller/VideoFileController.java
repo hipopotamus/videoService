@@ -33,7 +33,7 @@ public class VideoFileController {
     private final VideoFileService videoFileService;
 
     @GetMapping("{videoName}")
-    public ResponseEntity<Resource> fileDetails(@PathVariable String videoName) throws MalformedURLException {
+    public ResponseEntity<Resource> fileDetails(@PathVariable String videoName) {
 
         Resource resource = new FileSystemResource(path + videoName);
 
