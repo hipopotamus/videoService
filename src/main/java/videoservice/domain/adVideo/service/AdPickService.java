@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface AdPickService {
 
-    List<String> pickAdList(int size);
+    List<String> pickAdList(long size);
 }

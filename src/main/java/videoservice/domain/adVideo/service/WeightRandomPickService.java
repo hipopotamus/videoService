@@ -26,7 +26,7 @@ public class WeightRandomPickService implements AdPickService {
     }
 
     @Override
-    public List<String> pickAdList(int size) {
+    public List<String> pickAdList(long size) {
 
         List<String> adUrls = new ArrayList<>();
 

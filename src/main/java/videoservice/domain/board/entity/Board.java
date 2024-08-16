@@ -38,15 +38,15 @@ public class Board extends BaseEntity {
 
     private String content;
 
-    private Long views;
+    private long views = 0L;
 
-    private Long adViews;
+    private long adViews = 0L;
 
-    private Long totalPlayTime;
+    private long totalPlayTime = 0L;
 
     @Convert(converter = StringStringListConverter.class)
     private List<String> adURLs = new ArrayList<>();
 
     @Convert(converter = StringLongListConverter.class)
-    private List<String> adTimes = new ArrayList<>();
+    private List<Long> adTimes = new ArrayList<>();
 }

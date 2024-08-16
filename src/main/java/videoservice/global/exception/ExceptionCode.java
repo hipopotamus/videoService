@@ -17,7 +17,8 @@ public enum ExceptionCode {
     UPLOAD_FAILED(500, "파일을 업로드하는데 실패했습니다.", "009"),
     DUPLICATION_NICKNAME(400, "동일한 닉네임의 계정이 존재합니다.", "010"),
     EMPTY_FILE(400, "파일이 비어있습니다.", "011"),
-    ILLEGAL_FILENAME(400, "잘못된 형식의 파일 이름입니다.", "012");
+    ILLEGAL_FILENAME(400, "잘못된 형식의 파일 이름입니다.", "012"),
+    NOT_FOUND_VIDEO(404, "영상을 찾을 수 없습니다.", "013");
 
     private int status;
 

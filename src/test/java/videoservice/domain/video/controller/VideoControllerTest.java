@@ -13,11 +13,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
-import videoservice.global.videoUtility.VideoUtility;
 import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.jwt.JwtProcessor;
+import videoservice.global.videoUtility.VideoUtility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,13 +33,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.restdocs.snippet.Attributes.key;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static videoservice.utility.ApiDocumentUtils.getRequestPreProcessor;
 import static videoservice.utility.ApiDocumentUtils.getResponsePreProcessor;
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 class VideoControllerTest {

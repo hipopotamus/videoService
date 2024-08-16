@@ -9,11 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
 import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.jwt.JwtProcessor;
 
+import java.io.File;
 import java.util.List;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -28,6 +30,7 @@ import static videoservice.utility.ApiDocumentUtils.getRequestPreProcessor;
 import static videoservice.utility.ApiDocumentUtils.getResponsePreProcessor;
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 class AdVideoControllerTest {
@@ -79,5 +82,35 @@ class AdVideoControllerTest {
                                 fieldWithPath("id").description("생성된 광고 영상의 ID")
                         )
                 ));
+
+        deleteFilesInDirectory("/Users/hipo/Desktop/project/toy_project/video/videoservice/src/test/resources/video");
+    }
+
+    public static void deleteFilesInDirectory(String directoryPath) {
+        File directory = new File(directoryPath);
+
+        if (!directory.exists()) {
+            System.out.println("Directory does not exist.");
+            return;
+        }
+
+        if (!directory.isDirectory()) {
+            System.out.println("Provided path is not a directory.");
+            return;
+        }
+
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    boolean deleted = file.delete();
+                    if (!deleted) {
+                        System.out.println("Failed to delete file: " + file.getName());
+                    }
+                } else if (file.isDirectory()) {
+                    deleteFilesInDirectory(file.getAbsolutePath()); // Recursive delete for subdirectories
+                }
+            }
+        }
     }
 }
