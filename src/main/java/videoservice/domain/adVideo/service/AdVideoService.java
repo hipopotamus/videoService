@@ -21,7 +21,7 @@ public class AdVideoService {
     @Transactional
     public IdDto addAdVideo(AdVideoAddRequest adVideoAddRequest, String path) {
 
-        String url = videoUtility.upload(adVideoAddRequest.getVideo(), path);
+        String url = videoUtility.upload(adVideoAddRequest.getAdVideo(), path);
         AdVideo adVideo = adVideoAddRequest.toAdVideo(url);
 
         AdVideo savedAdVideo = adVideoRepository.save(adVideo);

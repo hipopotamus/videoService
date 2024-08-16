@@ -13,7 +13,7 @@ import videoservice.domain.adVideo.entity.AdVideo;
 public class AdVideoAddRequest {
 
     @NotNull
-    MultipartFile video;
+    MultipartFile adVideo;
 
     @NotBlank
     @Length(min = 2, max = 30)

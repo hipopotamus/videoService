@@ -121,3 +121,24 @@ include::{snippets}/videoAdd/http-response.adoc[]
 
 .response-fields
 include::{snippets}/videoAdd/response-fields.adoc[]
+
+== VideoController
+
+=== 광고 영상 업로드
+.curl-request
+include::{snippets}/adVideoAdd/curl-request.adoc[]
+
+.http-request
+include::{snippets}/adVideoAdd/http-request.adoc[]
+
+.request-headers
+include::{snippets}/adVideoAdd/request-headers.adoc[]
+
+.request-parts
+include::{snippets}/adVideoAdd/request-parts.adoc[]
+
+.http-response
+include::{snippets}/adVideoAdd/http-response.adoc[]
+
+.response-fields
+include::{snippets}/adVideoAdd/response-fields.adoc[]
