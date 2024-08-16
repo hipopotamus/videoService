@@ -1,6 +1,8 @@
 package videoservice.global.exception.advice;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 import videoservice.global.exception.dto.ErrorResponse;
+
+import java.io.IOException;
 
 @Component
 @RestControllerAdvice
@@ -41,5 +45,16 @@ public class ExceptionAdvice {
                 new ErrorResponse(e.getClass().getSimpleName(), bindException.getMessage(), bindException.getCode());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ErrorResponse> ioExceptionHandler(IOException e) {
+
+        ErrorResponse errorResponse =
+                new ErrorResponse(e.getClass().getSimpleName(), e.getMessage(), ExceptionCode.IO_EXCEPTION.getCode());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

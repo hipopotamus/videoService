@@ -1,6 +1,7 @@
 package videoservice.global.jpa.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
@@ -25,7 +26,7 @@ public class StringLongListConverter implements AttributeConverter<List<Long>, S
     @Override
     public List<Long> convertToEntityAttribute(String dbData) {
         try {
-            return mapper.readValue(dbData, List.class);
+            return mapper.readValue(dbData, new TypeReference<List<Long>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

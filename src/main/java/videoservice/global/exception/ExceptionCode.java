@@ -18,7 +18,8 @@ public enum ExceptionCode {
     DUPLICATION_NICKNAME(400, "동일한 닉네임의 계정이 존재합니다.", "010"),
     EMPTY_FILE(400, "파일이 비어있습니다.", "011"),
     ILLEGAL_FILENAME(400, "잘못된 형식의 파일 이름입니다.", "012"),
-    NOT_FOUND_VIDEO(404, "영상을 찾을 수 없습니다.", "013");
+    NOT_FOUND_VIDEO(404, "영상을 찾을 수 없습니다.", "013"),
+    IO_EXCEPTION(400, "연결이 비정상적으로 끊겼습니다.", "014");
 
     private int status;
 

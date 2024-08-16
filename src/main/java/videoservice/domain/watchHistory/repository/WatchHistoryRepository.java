@@ -14,4 +14,8 @@ public interface WatchHistoryRepository extends JpaRepository<WatchHistory, Long
             "and watchHistory.board.id = :boardId " +
             "and watchHistory.deleted = false")
     Optional<WatchHistory> findByAccountAndBoard(@Param("accountId") Long accountId, @Param("boardId") Long boardId);
+
+    @Query("select watchHistory from WatchHistory watchHistory " +
+            "where watchHistory.board.id = :boardId and watchHistory.deleted = false")
+    Optional<WatchHistory> findByBoardId(@Param("boardId") Long boardId);
 }

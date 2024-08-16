@@ -17,7 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import videoservice.domain.account.repository.AccountRepository;
 import videoservice.global.security.filter.JwtAuthenticationFilter;
 import videoservice.global.security.filter.JwtAuthorizationFilter;
 import videoservice.global.security.handler.AccountAccessDeniedHandler;
@@ -54,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/accounts").permitAll()
                         .requestMatchers(HttpMethod.GET, "/videoFiles/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/view/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

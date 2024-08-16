@@ -17,4 +17,10 @@ public class VideoViewController {
         model.addAttribute("videoName", videoName);
         return "video";
     }
+
+    @GetMapping("/ad/{videoName}")
+    public String viewAdVideo(@PathVariable String videoName, Model model) {
+        model.addAttribute("videoName", videoName);
+        return "adVideo";
+    }
 }
