@@ -42,7 +42,7 @@ public class Board extends BaseEntity {
 
     private long adViews = 0L;
 
-    private long totalPlayTime = 0L;
+    private long totalPlaytime = 0L;
 
     @Convert(converter = StringStringListConverter.class)
     private List<String> adURLs = new ArrayList<>();

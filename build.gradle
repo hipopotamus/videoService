@@ -46,6 +46,7 @@ dependencies {
     implementation group: 'com.google.code.gson', name: 'gson'
     implementation 'net.bramp.ffmpeg:ffmpeg:0.6.2'
     implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     //db
     runtimeOnly 'com.h2database:h2'

@@ -7,6 +7,9 @@ VALUES ('1000001', 150000);
 INSERT INTO video(video_id, url, length, created_at, updated_at, deleted)
 VALUES ('30001', 'testVideoUrl1', 901, '2024-08-13 10:00:01', '2024-08-13 10:00:01', false);
 
+INSERT INTO board(board_id, account_id, video_id, title, content, views, ad_views, total_playtime, adurls, ad_times, created_at, updated_at, deleted)
+VALUES ('40001', '10001', '30001', 'boardTitle', 'boardContent', 0, 0, 0, '["http://localhost:8080/videoFiles/ad1.mp4","http://localhost:8080/videoFiles/ad4.mp4","http://localhost:8080/videoFiles/ad4.mp4"]', '[300,600,900]', '2024-08-13 10:00:01', '2024-08-13 10:00:01', false);
+
 INSERT INTO ad_video(ad_video_id, url, advertiser, weight, created_at, updated_at, deleted)
 VALUES ('20001', 'testURL1', 'testAdvertiser1', 10000, '2024-08-13 10:00:01', '2024-08-13 10:00:01', false);
 INSERT INTO ad_video(ad_video_id, url, advertiser, weight, created_at, updated_at, deleted)

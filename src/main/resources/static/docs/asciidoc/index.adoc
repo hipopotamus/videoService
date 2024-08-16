@@ -3,7 +3,7 @@
 :toc: left
 :toclevels: 2
 :toc-title: Table of Contents
-:source-highlighter: highlightjs
+:source-highlighter: prettify
 
 v1.0.0, 2024.08.13
 
@@ -161,3 +161,21 @@ include::{snippets}/boardAdd/http-response.adoc[]
 
 .response-fields
 include::{snippets}/boardAdd/response-fields.adoc[]
+
+== WatchHistoryController
+=== 시청 기록 업데이트
+
+.curl-request
+include::{snippets}/watchHistoryUpdate/curl-request.adoc[]
+
+.http-request
+include::{snippets}/watchHistoryUpdate/http-request.adoc[]
+
+.request-headers
+include::{snippets}/watchHistoryUpdate/request-headers.adoc[]
+
+.request-fields
+include::{snippets}/watchHistoryUpdate/request-fields.adoc[]
+
+.http-response
+include::{snippets}/watchHistoryUpdate/http-response.adoc[]

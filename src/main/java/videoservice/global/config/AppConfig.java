@@ -1,5 +1,7 @@
 package videoservice.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFprobe;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,5 +27,12 @@ public class AppConfig {
     @Bean
     public FFprobe fFprobe() throws IOException {
         return new FFprobe(ffprobePath);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
     }
 }

@@ -10,6 +10,7 @@ import videoservice.domain.board.entity.Board;
 import videoservice.global.auditing.BaseEntity;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -31,9 +32,15 @@ public class WatchHistory extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    private Long watchDuration;
+    private long watchDuration;
 
-    private Long breakPoint;
+    private long breakPoint;
 
     private LocalDateTime viewTime;
+
+    public void modify(WatchHistory watchHistory) {
+        Optional.of(watchHistory.getWatchDuration()).ifPresent(watchDuration -> this.watchDuration = watchDuration);
+        Optional.of(watchHistory.getBreakPoint()).ifPresent(breakPoint -> this.breakPoint = breakPoint);
+        Optional.ofNullable(watchHistory.getViewTime()).ifPresent(viewTime -> this.viewTime = viewTime);
+    }
 }
