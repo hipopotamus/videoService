@@ -10,17 +10,13 @@ import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
 import videoservice.domain.video.entity.Video;
 import videoservice.domain.video.repository.VideoRepository;
-import videoservice.domain.watchHistory.entity.WatchHistory;
-import videoservice.domain.watchHistory.repository.WatchHistoryRepository;
+import videoservice.domain.viewTime.service.ViewTimeService;
 import videoservice.global.dto.IdDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +25,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final VideoRepository videoRepository;
-    private final WatchHistoryRepository watchHistoryRepository;
     private final AdPickService adPickService;
+    private final ViewTimeService viewTimeService;
 
     @Transactional
     public IdDto addBoard(BoardAddRequest boardAddRequest, Long accountId) {
@@ -52,14 +48,15 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDetailsResponse findBoard(Long boardId) {
-        Optional<WatchHistory> optionalWatchHistory = watchHistoryRepository.findByBoardId(boardId);
-        boolean isAbuse = true;
+    public BoardDetailsResponse findBoard(Long accountId, Long boardId) {
 
-        if (optionalWatchHistory.isEmpty() ||
-                Duration.between(optionalWatchHistory.get().getViewTime(), LocalDateTime.now()).getSeconds() > 30) {
+        boolean isAbuse = true;
+        if (accountId != -1) {
+            isAbuse = viewTimeService.updateViewTime(accountId, boardId);
+        }
+
+        if (!isAbuse) {
             boardRepository.upViews(boardId);
-            isAbuse = false;
         }
 
         Board board = boardRepository.findById(boardId)
