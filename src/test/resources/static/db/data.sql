@@ -4,6 +4,9 @@ VALUES('10001', 'test1@test.com', '$2a$10$.s16a34pwL.M9NksIVSkIOasWPPsBB39blD1lO
 INSERT INTO total_weight(total_weight_id, total_weight)
 VALUES ('1000001', 150000);
 
+INSERT INTO video(video_id, url, length, created_at, updated_at, deleted)
+VALUES ('30001', 'testVideoUrl1', 901, '2024-08-13 10:00:01', '2024-08-13 10:00:01', false);
+
 INSERT INTO ad_video(ad_video_id, url, advertiser, weight, created_at, updated_at, deleted)
 VALUES ('20001', 'testURL1', 'testAdvertiser1', 10000, '2024-08-13 10:00:01', '2024-08-13 10:00:01', false);
 INSERT INTO ad_video(ad_video_id, url, advertiser, weight, created_at, updated_at, deleted)

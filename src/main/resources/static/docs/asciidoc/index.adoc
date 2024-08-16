@@ -123,7 +123,6 @@ include::{snippets}/videoAdd/http-response.adoc[]
 include::{snippets}/videoAdd/response-fields.adoc[]
 
 == VideoController
-
 === 광고 영상 업로드
 .curl-request
 include::{snippets}/adVideoAdd/curl-request.adoc[]
@@ -142,3 +141,23 @@ include::{snippets}/adVideoAdd/http-response.adoc[]
 
 .response-fields
 include::{snippets}/adVideoAdd/response-fields.adoc[]
+
+== BoardController
+=== 게시물 추가
+.curl-request
+include::{snippets}/boardAdd/curl-request.adoc[]
+
+.http-request
+include::{snippets}/boardAdd/http-request.adoc[]
+
+.request-fields
+include::{snippets}/boardAdd/request-fields.adoc[]
+
+.request-headers
+include::{snippets}/boardAdd/request-headers.adoc[]
+
+.http-response
+include::{snippets}/boardAdd/http-response.adoc[]
+
+.response-fields
+include::{snippets}/boardAdd/response-fields.adoc[]
