@@ -19,9 +19,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<IdDto> boardAdd(@LoginId Long accountId, @Valid @RequestBody BoardAddRequest boardAddRequest) {
+    public ResponseEntity<IdDto> boardAdd(@LoginId Long loginId, @Valid @RequestBody BoardAddRequest boardAddRequest) {
 
-        IdDto idDto = boardService.addBoard(boardAddRequest, accountId);
+        IdDto idDto = boardService.addBoard(loginId, boardAddRequest);
 
         return new ResponseEntity<>(idDto, HttpStatus.CREATED);
     }

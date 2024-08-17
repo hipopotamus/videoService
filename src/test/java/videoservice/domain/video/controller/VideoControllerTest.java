@@ -19,7 +19,7 @@ import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
 import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.jwt.JwtProcessor;
-import videoservice.global.videoUtility.VideoUtility;
+import videoservice.global.file.videofile.videoUtility.VideoUtility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -111,7 +111,7 @@ class VideoControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                get("/videoFiles/ad/{adVideoName}", adVideoName)
+                get("/videoFiles/progressive/{adVideoName}", adVideoName)
                         .accept(MediaType.APPLICATION_OCTET_STREAM)
         );
 

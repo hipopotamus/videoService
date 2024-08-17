@@ -24,7 +24,7 @@ public class WatchHistoryController {
     public ResponseEntity<IdDto> watchHistoryUpdate(@LoginId Long loginId,
                                                     @Valid @RequestBody WatchHistoryUpdateRequest watchHistoryUpdateRequest) {
 
-        IdDto idDto = watchHistoryService.updateWatchHistory(watchHistoryUpdateRequest, loginId);
+        IdDto idDto = watchHistoryService.updateWatchHistory(loginId, watchHistoryUpdateRequest);
 
         return new ResponseEntity<>(idDto, HttpStatus.OK);
     }

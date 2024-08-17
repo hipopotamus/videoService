@@ -18,7 +18,7 @@ public class WatchHistoryService {
     private final WatchHistoryRepository watchHistoryRepository;
 
     @Transactional
-    public IdDto updateWatchHistory(WatchHistoryUpdateRequest watchHistoryUpdateRequest, Long accountId) {
+    public IdDto updateWatchHistory(Long accountId, WatchHistoryUpdateRequest watchHistoryUpdateRequest) {
 
         Optional<WatchHistory> optionalWatchHistory =
                 watchHistoryRepository.findByAccountAndBoard(accountId, watchHistoryUpdateRequest.getBoardId());

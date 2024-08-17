@@ -1,4 +1,4 @@
-package videoservice.domain.video.controller;
+package videoservice.global.file.videofile.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,17 +57,17 @@ public class VideoFileController {
                 .body(region);
     }
 
-    @GetMapping("/ad/{adVideoName}")
-    public ResponseEntity<Resource> adVideoDetails (@PathVariable String adVideoName) throws IOException {
+    @GetMapping("/progressive/{videoName}")
+    public ResponseEntity<Resource> videoProgressive(@PathVariable String videoName) throws IOException {
 
-        FileSystemResource resource = new FileSystemResource(path + adVideoName);
+        FileSystemResource resource = new FileSystemResource(path + videoName);
         HttpHeaders headers = new HttpHeaders();
-        String mimeType = Files.probeContentType(Paths.get(path + adVideoName));
+        String mimeType = Files.probeContentType(Paths.get(path + videoName));
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
 
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s", adVideoName));
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s", videoName));
         headers.setContentType(MediaType.parseMediaType(mimeType));
 
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);

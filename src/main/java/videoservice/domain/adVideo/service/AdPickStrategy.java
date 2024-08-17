@@ -2,7 +2,7 @@ package videoservice.domain.adVideo.service;
 
 import java.util.List;
 
-public interface AdPickService {
+public interface AdPickStrategy {
 
     List<String> pickAdList(long size);
 }

@@ -15,12 +15,13 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class WeightRandomPickService implements AdPickService {
+public class WeightRandomPickStrategy implements AdPickStrategy {
 
     private final TotalWeightRepository totalWeightRepository;
     private final AdVideoRepository adVideoRepository;
 
     public void addWeight(Long weight) {
+
         TotalWeight totalWeight = totalWeightRepository.findAll().getFirst();
         totalWeightRepository.addWeight(weight, totalWeight.getId());
     }

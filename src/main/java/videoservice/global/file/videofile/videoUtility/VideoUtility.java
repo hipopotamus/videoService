@@ -1,4 +1,4 @@
-package videoservice.global.videoUtility;
+package videoservice.global.file.videofile.videoUtility;
 
 import lombok.RequiredArgsConstructor;
 import net.bramp.ffmpeg.FFprobe;

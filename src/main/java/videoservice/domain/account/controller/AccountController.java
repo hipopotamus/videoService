@@ -20,29 +20,33 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<IdDto> accountAdd(@RequestBody AccountAddRequest accountAddRequest) {
+
         IdDto idDto = accountService.addAccount(accountAddRequest);
 
         return new ResponseEntity<>(idDto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<AccountDetailResponse> profileDetails(@LoginId Long accountId) {
-        AccountDetailResponse accountDetailResponse = accountService.findProfile(accountId);
+    public ResponseEntity<AccountDetailResponse> profileDetails(@LoginId Long loginId) {
+
+        AccountDetailResponse accountDetailResponse = accountService.findProfile(loginId);
 
         return new ResponseEntity<>(accountDetailResponse, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<IdDto> accountModify(@LoginId Long accountId,
+    public ResponseEntity<IdDto> accountModify(@LoginId Long loginId,
                                                @RequestBody AccountModifyRequest accountModifyRequest) {
-        IdDto idDto = accountService.modifyAccount(accountId, accountModifyRequest);
+
+        IdDto idDto = accountService.modifyAccount(loginId, accountModifyRequest);
 
         return new ResponseEntity<>(idDto, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> accountDelete(@LoginId Long accountId) {
-        accountService.deleteAccount(accountId);
+    public ResponseEntity<String> accountDelete(@LoginId Long loginId) {
+
+        accountService.deleteAccount(loginId);
 
         return new ResponseEntity<>("Account deleted", HttpStatus.OK);
     }

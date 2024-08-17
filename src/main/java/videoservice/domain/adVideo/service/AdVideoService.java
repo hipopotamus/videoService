@@ -7,7 +7,7 @@ import videoservice.domain.adVideo.dto.AdVideoAddRequest;
 import videoservice.domain.adVideo.entity.AdVideo;
 import videoservice.domain.adVideo.repository.AdVideoRepository;
 import videoservice.global.dto.IdDto;
-import videoservice.global.videoUtility.VideoUtility;
+import videoservice.global.file.videofile.videoUtility.VideoUtility;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +15,7 @@ import videoservice.global.videoUtility.VideoUtility;
 public class AdVideoService {
 
     private final AdVideoRepository adVideoRepository;
-    private final WeightRandomPickService WeightRandomPickService;
+    private final WeightRandomPickStrategy weightRandomPickStrategy;
     private final VideoUtility videoUtility;
 
     @Transactional
@@ -26,9 +26,8 @@ public class AdVideoService {
 
         AdVideo savedAdVideo = adVideoRepository.save(adVideo);
 
-        WeightRandomPickService.addWeight(adVideoAddRequest.getWeight());
+        weightRandomPickStrategy.addWeight(adVideoAddRequest.getWeight());
 
         return new IdDto(savedAdVideo.getId());
     }
-
 }

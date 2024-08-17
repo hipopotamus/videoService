@@ -23,6 +23,7 @@ public class AccountService {
 
     @Transactional
     public IdDto addAccount(AccountAddRequest accountAddRequest) {
+
         verifyDuplicateEmail(accountAddRequest.getEmail());
         verifyDuplicateNickname(accountAddRequest.getNickname());
 
@@ -33,6 +34,7 @@ public class AccountService {
     }
 
     public AccountDetailResponse findProfile(Long accountId) {
+
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
@@ -41,6 +43,7 @@ public class AccountService {
 
     @Transactional
     public IdDto modifyAccount(Long accountId, AccountModifyRequest accountModifyRequest) {
+
         verifyDuplicateNickname(accountModifyRequest.getNickname());
 
         Account account = accountRepository.findById(accountId)
@@ -54,6 +57,7 @@ public class AccountService {
 
     @Transactional
     public void deleteAccount(Long accountId) {
+
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
@@ -68,21 +72,23 @@ public class AccountService {
         }
     }
 
-    private void verifyDuplicateNickname(String nicknmae) {
-        if (nicknmae != null) {
-            if (accountRepository.existsByNickname(nicknmae)) {
+    private void verifyDuplicateNickname(String nickname) {
+        if (nickname != null) {
+            if (accountRepository.existsByNickname(nickname)) {
                 throw new BusinessLogicException(ExceptionCode.DUPLICATION_NICKNAME);
             }
         }
     }
 
     private Account getAccountForAdd(AccountAddRequest accountAddRequest) {
+
         String encodedPassword = bCryptPasswordEncoder.encode(accountAddRequest.getPassword());
 
         return accountAddRequest.toAccount(encodedPassword);
     }
 
     private Account getAccountForModify(AccountModifyRequest accountModifyRequest) {
+
         String encodedPassword = null;
         if (accountModifyRequest.getPassword() != null) {
             encodedPassword = bCryptPasswordEncoder.encode(accountModifyRequest.getPassword());

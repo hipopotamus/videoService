@@ -12,18 +12,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class WeightRandomPickServiceTest {
+class WeightRandomPickStrategyTest {
 
-    private static final Logger log = LoggerFactory.getLogger(WeightRandomPickServiceTest.class);
+    private static final Logger log = LoggerFactory.getLogger(WeightRandomPickStrategyTest.class);
     @Autowired
-    private WeightRandomPickService weightRandomPickService;
+    private WeightRandomPickStrategy weightRandomPickStrategy;
 
     @Test
     @DisplayName("가중치 랜덤 광고 뽑기_성공")
     public void randomWeightPick_Success() {
 
         //when
-        List<String> adUrlList = weightRandomPickService.pickAdList(3);
+        List<String> adUrlList = weightRandomPickStrategy.pickAdList(3);
 
         //then
         assertThat(adUrlList).hasSize(3);
@@ -35,7 +35,7 @@ class WeightRandomPickServiceTest {
     public void randomWeightPick_SizeZero() {
 
         //when
-        List<String> adUrlList = weightRandomPickService.pickAdList(0);
+        List<String> adUrlList = weightRandomPickStrategy.pickAdList(0);
 
         //then
         assertThat(adUrlList).isEmpty();
@@ -46,7 +46,7 @@ class WeightRandomPickServiceTest {
     public void randomWeightPick_SizeGreaterThanTotal() {
 
         //when
-        List<String> adUrlList = weightRandomPickService.pickAdList(10);
+        List<String> adUrlList = weightRandomPickStrategy.pickAdList(10);
 
         //then
         assertThat(adUrlList).hasSize(10);
