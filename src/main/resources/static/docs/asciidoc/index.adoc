@@ -175,6 +175,38 @@ include::{snippets}/boardAdd/http-response.adoc[]
 .response-fields
 include::{snippets}/boardAdd/response-fields.adoc[]
 
+=== 조회수 증가
+.curl-request
+include::{snippets}/upViews/curl-request.adoc[]
+
+.http-request
+include::{snippets}/upViews/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/upViews/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/upViews/request-headers.adoc[]
+
+.http-response
+include::{snippets}/upViews/http-response.adoc[]
+
+=== 재생시간 추가
+.curl-request
+include::{snippets}/totalPlaytimeAdd/curl-request.adoc[]
+
+.http-request
+include::{snippets}/totalPlaytimeAdd/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/totalPlaytimeAdd/path-parameters.adoc[]
+
+.query-parameters
+include::{snippets}/totalPlaytimeAdd/query-parameters.adoc[]
+
+.http-response
+include::{snippets}/totalPlaytimeAdd/http-response.adoc[]
+
 == WatchHistoryController
 === 시청 기록 업데이트
 
