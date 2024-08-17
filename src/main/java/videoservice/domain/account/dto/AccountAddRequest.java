@@ -3,8 +3,10 @@ package videoservice.domain.account.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.entity.Gender;
@@ -15,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountAddRequest {
 
     @Email

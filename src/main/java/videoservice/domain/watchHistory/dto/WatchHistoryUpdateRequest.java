@@ -9,8 +9,6 @@ import videoservice.domain.account.entity.Account;
 import videoservice.domain.board.entity.Board;
 import videoservice.domain.watchHistory.entity.WatchHistory;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,21 +19,13 @@ public class WatchHistoryUpdateRequest {
     long boardId;
 
     @NotNull
-    long watchDuration;
-
-    @NotNull
     long breakPoint;
-
-    @NotNull
-    LocalDateTime viewTime;
 
     public WatchHistory toWatchHistory(Long accountId) {
         return WatchHistory.builder()
                 .account(Account.builder().id(accountId).build())
                 .board(Board.builder().id(boardId).build())
-                .watchDuration(watchDuration)
                 .breakPoint(breakPoint)
-                .viewTime(viewTime)
                 .build();
     }
 }

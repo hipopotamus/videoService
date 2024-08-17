@@ -1,6 +1,6 @@
 package videoservice.domain.account.controller;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +42,13 @@ class AccountControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private Gson gson;
-
-    @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
     private JwtProcessor jwtProcessor;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("로그인_성공")
@@ -59,7 +59,7 @@ class AccountControllerTest {
         String password = "12345678";
 
         LoginDto loginDto = new LoginDto(email, password);
-        String content = gson.toJson(loginDto);
+        String content = objectMapper.writeValueAsString(loginDto);
 
 
         //when
@@ -95,6 +95,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("계정 추가_성공")
     void accountAdd_Success() throws Exception {
+
         // given
         AccountAddRequest accountAddRequest = AccountAddRequest.builder()
                 .email("test@test.com")
@@ -104,7 +105,7 @@ class AccountControllerTest {
                 .birthday("1993-12-22")
                 .build();
 
-        String content = gson.toJson(accountAddRequest);
+        String content = objectMapper.writeValueAsString(accountAddRequest);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -187,7 +188,7 @@ class AccountControllerTest {
                 .password("newPassword123")
                 .build();
 
-        String content = gson.toJson(accountModifyRequest);
+        String content = objectMapper.writeValueAsString(accountModifyRequest);
 
         // when
         ResultActions actions = mockMvc.perform(

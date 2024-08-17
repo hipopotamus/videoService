@@ -17,8 +17,6 @@ import videoservice.domain.watchHistory.dto.WatchHistoryUpdateRequest;
 import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.jwt.JwtProcessor;
 
-import java.time.LocalDateTime;
-
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -58,9 +56,7 @@ class WatchHistoryControllerTest {
 
         WatchHistoryUpdateRequest watchHistoryUpdateRequest = WatchHistoryUpdateRequest.builder()
                 .boardId(40001L)
-                .watchDuration(300L)
                 .breakPoint(120L)
-                .viewTime(LocalDateTime.now())
                 .build();
 
         String content = objectMapper.writeValueAsString(watchHistoryUpdateRequest);
@@ -84,9 +80,7 @@ class WatchHistoryControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("boardId").description("게시물 ID").attributes(key("constraints").value("NotNull")),
-                                fieldWithPath("watchDuration").description("시청한 시간(초)").attributes(key("constraints").value("NotNull")),
-                                fieldWithPath("breakPoint").description("시청 중단 시점(초)").attributes(key("constraints").value("NotNull")),
-                                fieldWithPath("viewTime").description("시청 시간").attributes(key("constraints").value("NotNull"))
+                                fieldWithPath("breakPoint").description("시청 중단 시점(초)").attributes(key("constraints").value("NotNull"))
                         ),
                         responseFields(
                                 fieldWithPath("id").description("업데이트된 시청 기록의 ID")
