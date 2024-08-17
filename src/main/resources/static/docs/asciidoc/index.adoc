@@ -103,6 +103,19 @@ include::{snippets}/videoStream/request-headers.adoc[]
 .http-response
 include::{snippets}/videoStream/http-response.adoc[]
 
+=== 광고 영상 조회
+.curl-request
+include::{snippets}/adVideoDetails/curl-request.adoc[]
+
+.http-request
+include::{snippets}/adVideoDetails/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/adVideoDetails/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/adVideoDetails/http-response.adoc[]
+
 === 비디오 업로드
 .curl-request
 include::{snippets}/videoAdd/curl-request.adoc[]

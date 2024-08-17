@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,14 +25,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,6 +92,40 @@ class VideoControllerTest {
                 ));
 
         // Cleanup: Delete the mock video file
+        mockVideoFile.delete();
+    }
+
+    @Test
+    @DisplayName("광고 영상 조회_성공")
+    void adVideoDetails_Success() throws Exception {
+
+        // given
+        String adVideoName = "testVideo.mp4";
+        byte[] mockVideoContent = createMockVideoContent();
+        File mockVideoFile = new File(path + adVideoName);
+
+        // Create a mock video file
+        try (FileOutputStream fos = new FileOutputStream(mockVideoFile)) {
+            fos.write(mockVideoContent);
+        }
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/videoFiles/ad/{adVideoName}", adVideoName)
+                        .accept(MediaType.APPLICATION_OCTET_STREAM)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andDo(document("adVideoDetails",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("adVideoName").description("조회할 광고 영상의 파일명").attributes(key("constraints").value("NotBlank"))
+                        )
+                ));
+
         mockVideoFile.delete();
     }
 
