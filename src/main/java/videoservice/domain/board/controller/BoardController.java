@@ -27,10 +27,26 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<BoardDetailsResponse> boardDetails(@LoginId Long accountId, @PathVariable Long boardId) {
+    public ResponseEntity<BoardDetailsResponse> boardDetails(@PathVariable Long boardId) {
 
-        BoardDetailsResponse boardDetailsResponse = boardService.findBoard(accountId, boardId);
+        BoardDetailsResponse boardDetailsResponse = boardService.findBoard(boardId);
 
         return new ResponseEntity<>(boardDetailsResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/views/{boardId}")
+    public ResponseEntity<String> upViews(@PathVariable Long boardId, @RequestHeader("viewFlag") boolean viewFlag) {
+
+        boardService.upBoardViews(boardId, viewFlag);
+
+        return new ResponseEntity<>("Success up views", HttpStatus.OK);
+    }
+
+    @PutMapping("/totalPlaytime/{boardId}")
+    public ResponseEntity<String> totalPlaytimeAdd(@PathVariable Long boardId, @RequestParam Long playtime) {
+
+        boardService.addPlaytime(boardId, playtime);
+
+        return new ResponseEntity<>("Success add playtime", HttpStatus.OK);
     }
 }

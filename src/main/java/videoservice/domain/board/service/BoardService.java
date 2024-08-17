@@ -10,7 +10,7 @@ import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
 import videoservice.domain.video.entity.Video;
 import videoservice.domain.video.repository.VideoRepository;
-import videoservice.domain.viewTime.service.ViewTimeService;
+import videoservice.domain.watchHistory.service.WatchHistoryService;
 import videoservice.global.dto.IdDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
@@ -26,7 +26,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final VideoRepository videoRepository;
     private final AdPickService adPickService;
-    private final ViewTimeService viewTimeService;
+    private final WatchHistoryService watchHistoryService;
 
     @Transactional
     public IdDto addBoard(BoardAddRequest boardAddRequest, Long accountId) {
@@ -48,20 +48,24 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDetailsResponse findBoard(Long accountId, Long boardId) {
-
-        boolean isAbuse = true;
-        if (accountId != -1) {
-            isAbuse = viewTimeService.updateViewTime(accountId, boardId);
-        }
-
-        if (!isAbuse) {
-            boardRepository.upViews(boardId);
-        }
+    public BoardDetailsResponse findBoard(Long boardId) {
 
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_BOARD));
 
-        return BoardDetailsResponse.of(board, isAbuse);
+        return BoardDetailsResponse.of(board);
+    }
+
+    @Transactional
+    public void addPlaytime(Long boardId, Long playtime) {
+        boardRepository.addPlaytime(playtime, boardId);
+    }
+
+    @Transactional
+    public void upBoardViews(Long boardId, boolean viewFlag) {
+
+        if (viewFlag) {
+            boardRepository.upViews(boardId);
+        }
     }
 }

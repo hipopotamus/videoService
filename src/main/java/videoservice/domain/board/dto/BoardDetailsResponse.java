@@ -27,9 +27,7 @@ public class BoardDetailsResponse {
 
     private List<Long> adTimes = new ArrayList<>();
 
-    private boolean isAbuse;
-
-    public static BoardDetailsResponse of(Board board, boolean isAbuse) {
+    public static BoardDetailsResponse of(Board board) {
         return BoardDetailsResponse.builder()
                 .videoURL(board.getVideo().getUrl())
                 .title(board.getTitle())
@@ -37,7 +35,6 @@ public class BoardDetailsResponse {
                 .views(board.getViews())
                 .adURLs(board.getAdURLs())
                 .adTimes(board.getAdTimes())
-                .isAbuse(isAbuse)
                 .build();
     }
 
