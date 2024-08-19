@@ -175,6 +175,28 @@ include::{snippets}/boardAdd/http-response.adoc[]
 .response-fields
 include::{snippets}/boardAdd/response-fields.adoc[]
 
+=== 게시물 수정
+.curl-request
+include::{snippets}/boardUpdate/curl-request.adoc[]
+
+.http-request
+include::{snippets}/boardUpdate/http-request.adoc[]
+
+.request-headers
+include::{snippets}/boardUpdate/request-headers.adoc[]
+
+.path-parameters
+include::{snippets}/boardUpdate/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/boardUpdate/request-fields.adoc[]
+
+.http-response
+include::{snippets}/boardUpdate/http-response.adoc[]
+
+.response-fields
+include::{snippets}/boardUpdate/response-fields.adoc[]
+
 === 조회수 증가
 .curl-request
 include::{snippets}/upViews/curl-request.adoc[]

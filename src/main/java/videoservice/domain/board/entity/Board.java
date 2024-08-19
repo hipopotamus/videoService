@@ -13,6 +13,7 @@ import videoservice.global.jpa.converter.StringStringListConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -49,4 +50,9 @@ public class Board extends BaseEntity {
 
     @Convert(converter = StringLongListConverter.class)
     private List<Long> adTimes = new ArrayList<>();
+
+    public void modify(Board board) {
+        Optional.ofNullable(board.title).ifPresent(title -> this.title = title);
+        Optional.ofNullable(board.content).ifPresent(content -> this.content = content);
+    }
 }

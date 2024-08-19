@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
+import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.service.BoardService;
 import videoservice.global.argumentresolver.LoginId;
 import videoservice.global.dto.IdDto;
@@ -32,6 +33,15 @@ public class BoardController {
         BoardDetailsResponse boardDetailsResponse = boardService.findBoard(boardId);
 
         return new ResponseEntity<>(boardDetailsResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/{boardId}")
+    public ResponseEntity<IdDto> boardUpdate(@LoginId Long loginId, @PathVariable Long boardId,
+                                             @Valid @RequestBody BoardUpdateRequest boardUpdateRequest) {
+
+        IdDto idDto = boardService.updateBoard(loginId, boardId, boardUpdateRequest);
+
+        return new ResponseEntity<>(idDto, HttpStatus.OK);
     }
 
     @PostMapping("/statistic/views/{boardId}")

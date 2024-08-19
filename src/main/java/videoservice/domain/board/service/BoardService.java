@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.adVideo.service.AdPickStrategy;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
+import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
 import videoservice.domain.video.entity.Video;
@@ -42,7 +43,6 @@ public class BoardService {
         return new IdDto(saveBoard.getId());
     }
 
-    @Transactional
     public BoardDetailsResponse findBoard(Long boardId) {
 
         Board board = boardRepository.findById(boardId)
@@ -50,6 +50,21 @@ public class BoardService {
 
         return BoardDetailsResponse.of(board);
     }
+
+    @Transactional
+    public IdDto updateBoard(Long accountId, Long boardId, BoardUpdateRequest boardUpdateRequest) {
+
+        Board board = boardRepository.findByIdWithAccount(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_BOARD));
+
+        verifyOwner(accountId, board);
+
+        Board updateSource = boardUpdateRequest.toBoard();
+        board.modify(updateSource);
+
+        return new IdDto(board.getId());
+    }
+
 
     @Transactional
     public void addPlaytime(Long boardId, Long playtime) {
@@ -74,5 +89,11 @@ public class BoardService {
         }
 
         return adTimes;
+    }
+
+    private static void verifyOwner(Long accountId, Board board) {
+        if (!board.getAccount().getId().equals(accountId)) {
+            throw new BusinessLogicException(ExceptionCode.FORBIDDEN);
+        }
     }
 }
