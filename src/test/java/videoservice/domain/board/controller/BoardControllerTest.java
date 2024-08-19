@@ -21,7 +21,6 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.key;
@@ -100,8 +99,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                post("/boards/views/{boardId}", boardId)
-                        .header("viewFlag", true)
+                post("/boards/statistic/views/{boardId}", boardId)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -113,11 +111,7 @@ class BoardControllerTest {
                         getResponsePreProcessor(),
                         pathParameters(
                                 parameterWithName("boardId").description("게시물 ID").attributes(key("constraints").value("NotNull"))
-                        ),
-                        requestHeaders(
-                                headerWithName("viewFlag").description("조회수 증가 여부").attributes(key("constraints").value("Boolean"))
-                        ),
-                        responseBody()  // 응답 내용이 단순한 문자열이므로 별도의 필드 설명이 필요 없음
+                        )
                 ));
     }
 
@@ -130,7 +124,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                put("/boards/totalPlaytime/{boardId}?playtime={playtime}", boardId, playtime)
+                post("/boards/statistic/totalPlaytime/{boardId}?playtime={playtime}", boardId, playtime)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -145,8 +139,31 @@ class BoardControllerTest {
                         ),
                         queryParameters(
                                 parameterWithName("playtime").description("추가할 재생시간 (초)").attributes(key("constraints").value("Long"))
-                        ),
-                        responseBody()  // 응답 내용이 단순한 문자열이므로 별도의 필드 설명이 필요 없음
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("광고 조회수 증가_성공")
+    void adViewsUp_Success() throws Exception {
+        // given
+        Long boardId = 40001L;
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/boards/statistic/adViews/{boardId}", boardId)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andDo(document("adViewsUp",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("boardId").description("게시물 ID").attributes(key("constraints").value("NotNull"))
+                        )
                 ));
     }
 }

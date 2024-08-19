@@ -207,6 +207,19 @@ include::{snippets}/totalPlaytimeAdd/query-parameters.adoc[]
 .http-response
 include::{snippets}/totalPlaytimeAdd/http-response.adoc[]
 
+=== 광고 조회수 증가
+.curl-request
+include::{snippets}/adViewsUp/curl-request.adoc[]
+
+.http-request
+include::{snippets}/adViewsUp/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/adViewsUp/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/adViewsUp/http-response.adoc[]
+
 == WatchHistoryController
 === 시청 기록 업데이트
 

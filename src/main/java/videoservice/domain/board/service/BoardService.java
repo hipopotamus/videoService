@@ -57,10 +57,13 @@ public class BoardService {
     }
 
     @Transactional
-    public void upBoardViews(Long boardId, boolean viewFlag) {
-        if (viewFlag) {
+    public void upBoardViews(Long boardId) {
             boardRepository.upViews(boardId);
-        }
+    }
+
+    @Transactional
+    public void upAddViews(Long boardId) {
+        boardRepository.upAddViews(boardId);
     }
 
     private static List<Long> getAdTimes(List<String> adUrl) {

@@ -54,8 +54,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/videoFiles/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/view/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/boards/views/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/boards/totalPlaytime/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/boards/statistic/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

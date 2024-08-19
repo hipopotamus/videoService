@@ -34,19 +34,27 @@ public class BoardController {
         return new ResponseEntity<>(boardDetailsResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/views/{boardId}")
-    public ResponseEntity<String> upViews(@PathVariable Long boardId, @RequestHeader("viewFlag") boolean viewFlag) {
+    @PostMapping("/statistic/views/{boardId}")
+    public ResponseEntity<String> upViews(@PathVariable Long boardId) {
 
-        boardService.upBoardViews(boardId, viewFlag);
+        boardService.upBoardViews(boardId);
 
-        return new ResponseEntity<>("Success up views", HttpStatus.OK);
+        return new ResponseEntity<>("Views successfully up", HttpStatus.OK);
     }
 
-    @PutMapping("/totalPlaytime/{boardId}")
+    @PostMapping("/statistic/totalPlaytime/{boardId}")
     public ResponseEntity<String> totalPlaytimeAdd(@PathVariable Long boardId, @RequestParam Long playtime) {
 
         boardService.addPlaytime(boardId, playtime);
 
-        return new ResponseEntity<>("Success add playtime", HttpStatus.OK);
+        return new ResponseEntity<>("Playtime successfully increased", HttpStatus.OK);
+    }
+
+    @PostMapping("/statistic/adViews/{boardId}")
+    public ResponseEntity<String> adViewsUp(@PathVariable Long boardId) {
+
+        boardService.upAddViews(boardId);
+
+        return new ResponseEntity<>("AddViews successfully up", HttpStatus.OK);
     }
 }

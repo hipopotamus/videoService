@@ -25,4 +25,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select board from Board board " +
             "where board.id = :boardId and board.deleted = false ")
     Optional<Board> findById(@Param("boardId") Long boardId);
+
+    @Modifying
+    @Query("update Board board " +
+            "set board.adViews = board.adViews + 1 " +
+            "where board.id = :boardId and board.deleted = false")
+    void upAddViews(@Param("boardId") Long boardId);
 }
