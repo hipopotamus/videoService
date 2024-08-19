@@ -23,19 +23,21 @@ public class BoardDetailsResponse {
 
     private long views;
 
+    private long breakPoints;
+
     private List<String> adURLs = new ArrayList<>();
 
     private List<Long> adTimes = new ArrayList<>();
 
-    public static BoardDetailsResponse of(Board board) {
+    public static BoardDetailsResponse of(Board board, long breakPoints) {
         return BoardDetailsResponse.builder()
                 .videoURL(board.getVideo().getUrl())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .views(board.getViews())
+                .breakPoints(breakPoints)
                 .adURLs(board.getAdURLs())
                 .adTimes(board.getAdTimes())
                 .build();
     }
-
 }

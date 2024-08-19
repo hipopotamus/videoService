@@ -99,6 +99,54 @@ class BoardControllerTest {
     }
 
     @Test
+    @DisplayName("게시물 상세 조회_성공")
+    void boardDetails_Success() throws Exception {
+        // given
+        Long accountId = 10001L;
+        Account account = accountRepository.findById(accountId).get();
+        String jwt = "Bearer " + jwtProcessor.createAuthJwtToken(new UserAccount(account));
+
+        Long boardId = 40001L;
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/boards/{boardId}", boardId)
+                        .header("Authorization", jwt)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.videoURL").isNotEmpty())
+                .andExpect(jsonPath("$.title").isNotEmpty())
+                .andExpect(jsonPath("$.content").isNotEmpty())
+                .andExpect(jsonPath("$.views").isNumber())
+                .andExpect(jsonPath("$.breakPoints").isNumber())
+                .andExpect(jsonPath("$.adURLs").isArray())
+                .andExpect(jsonPath("$.adTimes").isArray())
+                .andDo(document("boardDetails",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰").attributes(key("constraints").value("JWT Form"))
+                        ),
+                        pathParameters(
+                                parameterWithName("boardId").description("게시물 ID").attributes(key("constraints").value("NotNull"))
+                        ),
+                        responseFields(
+                                fieldWithPath("videoURL").description("비디오 URL").attributes(key("constraints").value("NotNull")),
+                                fieldWithPath("title").description("게시물 제목").attributes(key("constraints").value("NotBlank, Length(min=1, max=100)")),
+                                fieldWithPath("content").description("게시물 내용").attributes(key("constraints").value("NotBlank, Length(min=1, max=300)")),
+                                fieldWithPath("views").description("조회수").attributes(key("constraints").value("Number")),
+                                fieldWithPath("breakPoints").description("영상 중단 지점").attributes(key("constraints").value("Number")),
+                                fieldWithPath("adURLs").description("광고 URL 목록").attributes(key("constraints").value("Array")),
+                                fieldWithPath("adTimes").description("광고 삽입 시점 목록").attributes(key("constraints").value("Array"))
+                        )
+                ));
+    }
+
+    @Test
     @DisplayName("게시물 수정_성공")
     void boardUpdate_Success() throws Exception {
         // given

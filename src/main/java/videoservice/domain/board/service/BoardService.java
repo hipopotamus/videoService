@@ -11,12 +11,15 @@ import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
 import videoservice.domain.video.entity.Video;
 import videoservice.domain.video.repository.VideoRepository;
+import videoservice.domain.watchHistory.entity.WatchHistory;
+import videoservice.domain.watchHistory.repository.WatchHistoryRepository;
 import videoservice.global.dto.IdDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final VideoRepository videoRepository;
     private final AdPickStrategy adPickStrategy;
+    private final WatchHistoryRepository watchHistoryRepository;
 
     @Transactional
     public IdDto addBoard(Long loginId, BoardAddRequest boardAddRequest) {
@@ -43,12 +47,14 @@ public class BoardService {
         return new IdDto(saveBoard.getId());
     }
 
-    public BoardDetailsResponse findBoard(Long boardId) {
+    public BoardDetailsResponse findBoard(Long loginId, Long boardId) {
+
+        long breakPoint = getBreakPoint(loginId, boardId);
 
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_BOARD));
 
-        return BoardDetailsResponse.of(board);
+        return BoardDetailsResponse.of(board, breakPoint);
     }
 
     @Transactional
@@ -100,6 +106,20 @@ public class BoardService {
         }
 
         return adTimes;
+    }
+
+    private long getBreakPoint(Long loginId, Long boardId) {
+
+        long breakPoint = 0;
+
+        Optional<WatchHistory> optionalWatchHistory =
+                watchHistoryRepository.findByAccountAndBoard(loginId, boardId);
+        if (optionalWatchHistory.isPresent()) {
+            WatchHistory watchHistory = optionalWatchHistory.get();
+            breakPoint = watchHistory.getBreakPoint();
+
+        }
+        return breakPoint;
     }
 
     private static void verifyOwner(Long accountId, Board board) {
