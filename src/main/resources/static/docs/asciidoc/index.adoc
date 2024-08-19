@@ -197,6 +197,22 @@ include::{snippets}/boardUpdate/http-response.adoc[]
 .response-fields
 include::{snippets}/boardUpdate/response-fields.adoc[]
 
+=== 게시물 삭제
+.curl-request
+include::{snippets}/deleteBoard/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteBoard/http-request.adoc[]
+
+.request-headers
+include::{snippets}/deleteBoard/request-headers.adoc[]
+
+.path-parameters
+include::{snippets}/deleteBoard/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/deleteBoard/http-response.adoc[]
+
 === 조회수 증가
 .curl-request
 include::{snippets}/upViews/curl-request.adoc[]

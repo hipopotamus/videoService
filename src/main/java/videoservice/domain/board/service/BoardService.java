@@ -28,7 +28,7 @@ public class BoardService {
     private final AdPickStrategy adPickStrategy;
 
     @Transactional
-    public IdDto addBoard(Long accountId, BoardAddRequest boardAddRequest) {
+    public IdDto addBoard(Long loginId, BoardAddRequest boardAddRequest) {
 
         Video video = videoRepository.findById(boardAddRequest.getVideoId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_VIDEO));
@@ -37,7 +37,7 @@ public class BoardService {
         List<String> adUrl = adPickStrategy.pickAdList(videoLength / 300);
         List<Long> adTimes = getAdTimes(adUrl);
 
-        Board board = boardAddRequest.toBoard(accountId, adUrl, adTimes);
+        Board board = boardAddRequest.toBoard(loginId, adUrl, adTimes);
         Board saveBoard = boardRepository.save(board);
 
         return new IdDto(saveBoard.getId());
@@ -52,17 +52,28 @@ public class BoardService {
     }
 
     @Transactional
-    public IdDto updateBoard(Long accountId, Long boardId, BoardUpdateRequest boardUpdateRequest) {
+    public IdDto updateBoard(Long loginId, Long boardId, BoardUpdateRequest boardUpdateRequest) {
 
         Board board = boardRepository.findByIdWithAccount(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_BOARD));
 
-        verifyOwner(accountId, board);
+        verifyOwner(loginId, board);
 
         Board updateSource = boardUpdateRequest.toBoard();
         board.modify(updateSource);
 
         return new IdDto(board.getId());
+    }
+
+    @Transactional
+    public void deleteBoard(Long loginId, Long boardId) {
+
+        Board board = boardRepository.findByIdWithAccount(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_BOARD));
+
+        verifyOwner(loginId, board);
+
+        board.softDelete();
     }
 
 

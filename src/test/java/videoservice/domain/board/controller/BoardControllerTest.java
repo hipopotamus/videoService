@@ -23,7 +23,7 @@ import videoservice.global.security.jwt.JwtProcessor;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.key;
@@ -147,6 +147,38 @@ class BoardControllerTest {
     }
 
     @Test
+    @DisplayName("게시물 삭제_성공")
+    void deleteBoard_Success() throws Exception {
+        // given
+        Long accountId = 10001L;
+        Account account = accountRepository.findById(accountId).get();
+        String jwt = "Bearer " + jwtProcessor.createAuthJwtToken(new UserAccount(account));
+
+        Long boardId = 40001L;
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete("/boards/{boardId}", boardId)
+                        .header("Authorization", jwt)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andDo(document("deleteBoard",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰").attributes(key("constraints").value("JWT Form"))
+                        ),
+                        pathParameters(
+                                parameterWithName("boardId").description("게시물 ID").attributes(key("constraints").value("NotNull"))
+                        )
+                ));
+    }
+
+    @Test
     @DisplayName("조회수 증가_성공")
     void upViews_Success() throws Exception {
         // given
@@ -179,7 +211,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                post("/boards/statistic/totalPlaytime/{boardId}?playtime={playtime}", boardId, playtime)
+                put("/boards/statistic/totalPlaytime/{boardId}?playtime={playtime}", boardId, playtime)
                         .accept(MediaType.APPLICATION_JSON)
         );
 

@@ -18,11 +18,11 @@ public class WatchHistoryService {
     private final WatchHistoryRepository watchHistoryRepository;
 
     @Transactional
-    public IdDto updateWatchHistory(Long accountId, WatchHistoryUpdateRequest watchHistoryUpdateRequest) {
+    public IdDto updateWatchHistory(Long loginId, WatchHistoryUpdateRequest watchHistoryUpdateRequest) {
 
         Optional<WatchHistory> optionalWatchHistory =
-                watchHistoryRepository.findByAccountAndBoard(accountId, watchHistoryUpdateRequest.getBoardId());
-        WatchHistory updateWatchHistory = watchHistoryUpdateRequest.toWatchHistory(accountId);
+                watchHistoryRepository.findByAccountAndBoard(loginId, watchHistoryUpdateRequest.getBoardId());
+        WatchHistory updateWatchHistory = watchHistoryUpdateRequest.toWatchHistory(loginId);
 
         if (optionalWatchHistory.isEmpty()) {
             WatchHistory savedWatchHistory = watchHistoryRepository.save(updateWatchHistory);

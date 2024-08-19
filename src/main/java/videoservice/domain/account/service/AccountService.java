@@ -42,11 +42,11 @@ public class AccountService {
     }
 
     @Transactional
-    public IdDto modifyAccount(Long accountId, AccountModifyRequest accountModifyRequest) {
+    public IdDto modifyAccount(Long loginId, AccountModifyRequest accountModifyRequest) {
 
         verifyDuplicateNickname(accountModifyRequest.getNickname());
 
-        Account account = accountRepository.findById(accountId)
+        Account account = accountRepository.findById(loginId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
         Account modifyAccountParameter = getAccountForModify(accountModifyRequest);
@@ -56,9 +56,9 @@ public class AccountService {
     }
 
     @Transactional
-    public void deleteAccount(Long accountId) {
+    public void deleteAccount(Long loginId) {
 
-        Account account = accountRepository.findById(accountId)
+        Account account = accountRepository.findById(loginId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
         account.softDelete();

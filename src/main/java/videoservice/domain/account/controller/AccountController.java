@@ -48,7 +48,7 @@ public class AccountController {
 
         accountService.deleteAccount(loginId);
 
-        return new ResponseEntity<>("Account deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Account successfully deleted", HttpStatus.OK);
     }
 
 }

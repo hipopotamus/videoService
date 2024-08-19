@@ -35,13 +35,21 @@ public class BoardController {
         return new ResponseEntity<>(boardDetailsResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/{boardId}")
+    @PutMapping("/{boardId}")
     public ResponseEntity<IdDto> boardUpdate(@LoginId Long loginId, @PathVariable Long boardId,
                                              @Valid @RequestBody BoardUpdateRequest boardUpdateRequest) {
 
         IdDto idDto = boardService.updateBoard(loginId, boardId, boardUpdateRequest);
 
         return new ResponseEntity<>(idDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<String> deleteBoard(@LoginId Long loginId, @PathVariable Long boardId) {
+
+        boardService.deleteBoard(loginId, boardId);
+
+        return new ResponseEntity<>("Board successfully deleted", HttpStatus.OK);
     }
 
     @PostMapping("/statistic/views/{boardId}")
