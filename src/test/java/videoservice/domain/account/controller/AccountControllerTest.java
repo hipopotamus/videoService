@@ -20,6 +20,7 @@ import videoservice.global.security.authentication.UserAccount;
 import videoservice.global.security.dto.LoginDto;
 import videoservice.global.security.jwt.JwtProcessor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
@@ -102,7 +103,7 @@ class AccountControllerTest {
                 .password("testNickname")
                 .nickname("password123")
                 .gender(Gender.MALE)
-                .birthday("1993-12-22")
+                .birthday(LocalDate.of(1993, 12, 22))
                 .build();
 
         String content = objectMapper.writeValueAsString(accountAddRequest);

@@ -13,7 +13,6 @@ import videoservice.domain.account.entity.Gender;
 import videoservice.domain.account.entity.Role;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
@@ -37,7 +36,7 @@ public class AccountAddRequest {
     private Gender gender;
 
     @NotNull
-    private String birthday;
+    private LocalDate birthday;
 
     public Account toAccount(String encodedPassword) {
         return Account.builder()
@@ -45,7 +44,7 @@ public class AccountAddRequest {
                 .password(encodedPassword)
                 .nickname(nickname)
                 .gender(gender)
-                .birthDate(LocalDate.parse(birthday, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .birthDate(birthday)
                 .role(Role.USER)
                 .build();
     }

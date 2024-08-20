@@ -103,12 +103,12 @@ public class BoardService {
 
     @Transactional
     public void upBoardViews(Long boardId) {
-            boardRepository.upViews(boardId);
+            boardRepository.addViews(boardId, 1L);
     }
 
     @Transactional
     public void upAddViews(Long boardId) {
-        boardRepository.upAddViews(boardId);
+        boardRepository.addAddViews(boardId, 1L);
     }
 
     private static List<Long> getAdTimes(List<String> adUrl) {

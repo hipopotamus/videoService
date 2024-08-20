@@ -12,12 +12,6 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Modifying
-    @Query("update Board board " +
-            "set board.totalPlaytime = board.totalPlaytime + :playtime " +
-            "where board.id = :boardId and board.deleted = false ")
-    void addPlaytime(@Param("playtime") Long playtime, @Param("boardId") Long boardId);
-
     @Query("select board from Board board " +
             "where board.id = :boardId and board.deleted = false ")
     Optional<Board> findById(@Param("boardId") Long boardId);
@@ -31,13 +25,19 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Modifying
     @Query("update Board board " +
-            "set board.views = board.views + 1 " +
+            "set board.views = board.views + :views " +
             "where board.id = :boardId and board.deleted = false")
-    void upViews(@Param("boardId") Long boardId);
+    void addViews(@Param("boardId") Long boardId, @Param("views") Long views);
 
     @Modifying
     @Query("update Board board " +
-            "set board.adViews = board.adViews + 1 " +
+            "set board.adViews = board.adViews + :adVies " +
             "where board.id = :boardId and board.deleted = false")
-    void upAddViews(@Param("boardId") Long boardId);
+    void addAddViews(@Param("boardId") Long boardId, @Param("adViews") Long adViews);
+
+    @Modifying
+    @Query("update Board board " +
+            "set board.totalPlaytime = board.totalPlaytime + :playtime " +
+            "where board.id = :boardId and board.deleted = false ")
+    void addPlaytime(@Param("playtime") Long playtime, @Param("boardId") Long boardId);
 }
