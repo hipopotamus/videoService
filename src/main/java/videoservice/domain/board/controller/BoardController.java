@@ -2,15 +2,20 @@ package videoservice.domain.board.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
+import videoservice.domain.board.dto.BoardStatisticListResponse;
 import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.service.BoardService;
 import videoservice.global.argumentresolver.LoginId;
 import videoservice.global.dto.IdDto;
+import videoservice.global.dto.PageDto;
 
 @RestController
 @RequestMapping("/boards")
@@ -52,7 +57,16 @@ public class BoardController {
         return new ResponseEntity<>("Board successfully deleted", HttpStatus.OK);
     }
 
-    @PostMapping("/statistic/views/{boardId}")
+    @GetMapping("/statistics")
+    public ResponseEntity<PageDto<BoardStatisticListResponse>> boardStatisticList
+            (@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        PageDto<BoardStatisticListResponse> boardStatisticResponses = boardService.findBoardStatistics(pageable);
+
+        return new ResponseEntity<>(boardStatisticResponses, HttpStatus.OK);
+    }
+
+    @PostMapping("/statistics/views/{boardId}")
     public ResponseEntity<String> upViews(@PathVariable Long boardId) {
 
         boardService.upBoardViews(boardId);
@@ -60,7 +74,7 @@ public class BoardController {
         return new ResponseEntity<>("Views successfully up", HttpStatus.OK);
     }
 
-    @PostMapping("/statistic/totalPlaytime/{boardId}")
+    @PostMapping("/statistics/totalPlaytime/{boardId}")
     public ResponseEntity<String> totalPlaytimeAdd(@PathVariable Long boardId, @RequestParam Long playtime) {
 
         boardService.addPlaytime(boardId, playtime);
@@ -68,7 +82,7 @@ public class BoardController {
         return new ResponseEntity<>("Playtime successfully increased", HttpStatus.OK);
     }
 
-    @PostMapping("/statistic/adViews/{boardId}")
+    @PostMapping("/statistics/adViews/{boardId}")
     public ResponseEntity<String> adViewsUp(@PathVariable Long boardId) {
 
         boardService.upAddViews(boardId);

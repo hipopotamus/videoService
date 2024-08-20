@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -164,7 +167,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                post("/boards/{boardId}", boardId)
+                put("/boards/{boardId}", boardId)
                         .header("Authorization", jwt)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -227,6 +230,65 @@ class BoardControllerTest {
     }
 
     @Test
+    @DisplayName("게시물 통계 목록 조회_성공")
+    void boardStatisticList_Success() throws Exception {
+        // given
+        Long accountId = 10001L;
+        Account account = accountRepository.findById(accountId).get();
+        String jwt = "Bearer " + jwtProcessor.createAuthJwtToken(new UserAccount(account));
+
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("createdAt").descending());
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/boards/statistics")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize()))
+                        .param("sort", "createdAt,desc")
+                        .header("Authorization", jwt)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.totalPages").isNumber())
+                .andExpect(jsonPath("$.totalElements").isNumber())
+                .andExpect(jsonPath("$.first").isBoolean())
+                .andExpect(jsonPath("$.last").isBoolean())
+                .andExpect(jsonPath("$.size").value(pageable.getPageSize()))
+                .andDo(document("boardStatisticList",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰").attributes(key("constraints").value("JWT Form"))
+                        ),
+                        queryParameters(
+                                parameterWithName("page").description("페이지 번호").attributes(key("constraints").value("Default=0")).optional(),
+                                parameterWithName("size").description("페이지 크기").attributes(key("constraints").value("Default=20")).optional(),
+                                parameterWithName("sort").description("정렬 기준").attributes(key("constraints").value("Default=createdAt,desc")).optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("content[]").description("게시물 통계 리스트"),
+                                fieldWithPath("content[].accountId").description("게시물 작성자 ID"),
+                                fieldWithPath("content[].boardId").description("게시물 ID"),
+                                fieldWithPath("content[].views").description("조회수"),
+                                fieldWithPath("content[].adViews").description("광고 조회수"),
+                                fieldWithPath("content[].totalPlaytime").description("총 재생 시간"),
+                                fieldWithPath("totalPages").description("전체 페이지 수"),
+                                fieldWithPath("totalElements").description("전체 요소 수"),
+                                fieldWithPath("first").description("첫 번째 페이지 여부"),
+                                fieldWithPath("last").description("마지막 페이지 여부"),
+                                fieldWithPath("size").description("페이지 크기"),
+                                fieldWithPath("pageNumber").description("현재 페이지 번호"),
+                                fieldWithPath("numberOfElements").description("현재 페이지의 요소 수"),
+                                fieldWithPath("sorted").description("정렬 여부")
+                        )
+                ));
+    }
+
+    @Test
     @DisplayName("조회수 증가_성공")
     void upViews_Success() throws Exception {
         // given
@@ -234,7 +296,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                post("/boards/statistic/views/{boardId}", boardId)
+                post("/boards/statistics/views/{boardId}", boardId)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -259,7 +321,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                put("/boards/statistic/totalPlaytime/{boardId}?playtime={playtime}", boardId, playtime)
+                post("/boards/statistics/totalPlaytime/{boardId}?playtime={playtime}", boardId, playtime)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
@@ -286,7 +348,7 @@ class BoardControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                post("/boards/statistic/adViews/{boardId}", boardId)
+                post("/boards/statistics/adViews/{boardId}", boardId)
                         .accept(MediaType.APPLICATION_JSON)
         );
 

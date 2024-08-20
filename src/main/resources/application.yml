@@ -34,14 +34,14 @@ dir : /Users/hipo/Desktop/project/toy_project/video/videoservice/src/main/resour
 
 ffmpeg : /opt/homebrew/Cellar/ffmpeg/7.0.2
 
-#eureka:
-#  instance:
-#    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
-#  client:
-#    register-with-eureka: true
-#    fetch-registry: true
-#    service-url:
-#      defaultZone: http://127.0.0.1:8761/eureka
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
 
 jwt:
   secret-key: 28d93268-a80b-4594-918b-5926a79a49ed

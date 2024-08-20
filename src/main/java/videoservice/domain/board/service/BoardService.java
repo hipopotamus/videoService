@@ -1,11 +1,14 @@
 package videoservice.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.adVideo.service.AdPickStrategy;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
+import videoservice.domain.board.dto.BoardStatisticListResponse;
 import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
@@ -14,6 +17,7 @@ import videoservice.domain.video.repository.VideoRepository;
 import videoservice.domain.watchHistory.entity.WatchHistory;
 import videoservice.domain.watchHistory.repository.WatchHistoryRepository;
 import videoservice.global.dto.IdDto;
+import videoservice.global.dto.PageDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
@@ -55,6 +59,15 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_BOARD));
 
         return BoardDetailsResponse.of(board, breakPoint);
+    }
+
+    public PageDto<BoardStatisticListResponse> findBoardStatistics(Pageable pageable) {
+
+        Page<BoardStatisticListResponse> pageBoardResponse =
+                boardRepository.findStatisticList(pageable)
+                        .map(BoardStatisticListResponse::of);
+
+        return new PageDto<>(pageBoardResponse);
     }
 
     @Transactional

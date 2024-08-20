@@ -1,5 +1,7 @@
 package videoservice.domain.board.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,12 +18,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "where board.id = :boardId and board.deleted = false ")
     void addPlaytime(@Param("playtime") Long playtime, @Param("boardId") Long boardId);
 
-    @Modifying
-    @Query("update Board board " +
-            "set board.views = board.views + 1 " +
-            "where board.id = :boardId and board.deleted = false")
-    void upViews(@Param("boardId") Long boardId);
-
     @Query("select board from Board board " +
             "where board.id = :boardId and board.deleted = false ")
     Optional<Board> findById(@Param("boardId") Long boardId);
@@ -29,6 +25,15 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select board from Board board join fetch board.account " +
             "where board.id = :boardId and board.deleted = false")
     Optional<Board> findByIdWithAccount(@Param("boardId") Long boardId);
+
+    @Query("select board from Board board join fetch board.account where board.deleted = false ")
+    Page<Board> findStatisticList(Pageable pageable);
+
+    @Modifying
+    @Query("update Board board " +
+            "set board.views = board.views + 1 " +
+            "where board.id = :boardId and board.deleted = false")
+    void upViews(@Param("boardId") Long boardId);
 
     @Modifying
     @Query("update Board board " +

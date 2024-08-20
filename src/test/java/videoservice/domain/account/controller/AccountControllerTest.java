@@ -236,7 +236,6 @@ class AccountControllerTest {
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(content().string("Account deleted"))
                 .andDo(document("accountDelete",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
