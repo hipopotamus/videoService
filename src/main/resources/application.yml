@@ -15,11 +15,11 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
-    defer-datasource-initialization: true
-  sql:
-    init:
-      data-locations: classpath:static/db/data.sql
-      mode: always
+#    defer-datasource-initialization: true
+#  sql:
+#    init:
+#      data-locations: classpath:static/db/data.sql
+#      mode: always
   servlet:
     multipart:
       max-file-size: 1000MB

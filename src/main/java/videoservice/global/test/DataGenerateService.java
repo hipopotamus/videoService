@@ -76,8 +76,8 @@ public class DataGenerateService {
 
         for (Board board : boardList) {
             boardRepository.addViews(board.getId(), random.nextLong(10000));
-            boardRepository.addAddViews(board.getId(), random.nextLong(10000));
-            boardRepository.addPlaytime(board.getId(), random.nextLong(10000) + 30);
+            boardRepository.addAddViews(board.getId(), random.nextLong(1000));
+            boardRepository.addPlaytime(random.nextLong(10000) + 30, board.getId());
         }
     }
 

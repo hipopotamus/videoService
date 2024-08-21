@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/view/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/boards/statistics/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/dataGenerate/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
