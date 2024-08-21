@@ -1,5 +1,7 @@
 package videoservice.domain.account.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +22,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("select count(account) > 0 from Account account where account.nickname = :nickname and account.deleted = false")
     boolean existsByNickname(@Param("nickname") String nickname);
+
+    @Query("select account from Account account where account.deleted = false")
+    Page<Account> findAccountList(Pageable pageable);
 }

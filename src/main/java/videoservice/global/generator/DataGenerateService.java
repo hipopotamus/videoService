@@ -1,4 +1,4 @@
-package videoservice.global.test;
+package videoservice.global.generator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

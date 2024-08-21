@@ -1,15 +1,19 @@
 package videoservice.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.dto.AccountAddRequest;
 import videoservice.domain.account.dto.AccountDetailResponse;
+import videoservice.domain.account.dto.AccountIdResponse;
 import videoservice.domain.account.dto.AccountModifyRequest;
 import videoservice.domain.account.entity.Account;
 import videoservice.domain.account.repository.AccountRepository;
 import videoservice.global.dto.IdDto;
+import videoservice.global.dto.PageDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
@@ -62,6 +66,14 @@ public class AccountService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
         account.softDelete();
+    }
+
+    public PageDto<AccountIdResponse> findAccounts(Pageable pageable) {
+
+        Page<AccountIdResponse> pageAccountIdResponse = accountRepository.findAccountList(pageable)
+                .map(AccountIdResponse::of);
+
+        return new PageDto<>(pageAccountIdResponse);
     }
 
     private void verifyDuplicateEmail(String email) {

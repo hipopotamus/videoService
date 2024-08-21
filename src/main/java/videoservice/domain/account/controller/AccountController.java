@@ -1,15 +1,20 @@
 package videoservice.domain.account.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import videoservice.domain.account.dto.AccountAddRequest;
 import videoservice.domain.account.dto.AccountDetailResponse;
+import videoservice.domain.account.dto.AccountIdResponse;
 import videoservice.domain.account.dto.AccountModifyRequest;
 import videoservice.domain.account.service.AccountService;
 import videoservice.global.argumentresolver.LoginId;
 import videoservice.global.dto.IdDto;
+import videoservice.global.dto.PageDto;
 
 @RestController
 @RequestMapping("/accounts")
@@ -26,7 +31,7 @@ public class AccountController {
         return new ResponseEntity<>(idDto, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/profile")
     public ResponseEntity<AccountDetailResponse> profileDetails(@LoginId Long loginId) {
 
         AccountDetailResponse accountDetailResponse = accountService.findProfile(loginId);
@@ -49,6 +54,15 @@ public class AccountController {
         accountService.deleteAccount(loginId);
 
         return new ResponseEntity<>("Account successfully deleted", HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<PageDto<AccountIdResponse>> accountList
+            (@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        PageDto<AccountIdResponse> accountIdResponseList = accountService.findAccounts(pageable);
+
+        return new ResponseEntity<>(accountIdResponseList, HttpStatus.OK);
     }
 
 }

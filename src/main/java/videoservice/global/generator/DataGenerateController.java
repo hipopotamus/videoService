@@ -1,4 +1,4 @@
-package videoservice.global.test;
+package videoservice.global.generator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dataGenerate")
+@RequestMapping("/generate")
 @RequiredArgsConstructor
 public class DataGenerateController {
 
