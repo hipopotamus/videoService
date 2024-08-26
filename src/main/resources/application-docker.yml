@@ -15,11 +15,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
-#    defer-datasource-initialization: true
-#  sql:
-#    init:
-#      data-locations: classpath:static/db/data.sql
-#      mode: always
   servlet:
     multipart:
       max-file-size: 1000MB
@@ -29,10 +24,6 @@ spring:
       pageable:
         default-page-size: 10
         one-indexed-parameters: true
-
-dir : /app/resources/video/
-
-ffmpeg : /usr
 
 eureka:
   instance:
@@ -48,4 +39,8 @@ jwt:
   expiration: 36000000
   prefix: Bearer
   header: Authorization
+
+dir : /app/resources/video/
+
+ffmpeg : /usr
 

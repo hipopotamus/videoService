@@ -1,14 +1,11 @@
 package videoservice.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.adVideo.service.AdPickStrategy;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
-import videoservice.domain.board.dto.BoardStatisticsListResponse;
 import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
@@ -17,7 +14,6 @@ import videoservice.domain.video.repository.VideoRepository;
 import videoservice.domain.watchHistory.entity.WatchHistory;
 import videoservice.domain.watchHistory.repository.WatchHistoryRepository;
 import videoservice.global.dto.IdDto;
-import videoservice.global.dto.PageDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
@@ -61,15 +57,6 @@ public class BoardService {
         return BoardDetailsResponse.of(board, breakPoint);
     }
 
-    public PageDto<BoardStatisticsListResponse> findBoardStatisticsList(Pageable pageable) {
-
-        Page<BoardStatisticsListResponse> pageBoardResponse =
-                boardRepository.boardPageWithAccount(pageable)
-                        .map(BoardStatisticsListResponse::of);
-
-        return new PageDto<>(pageBoardResponse);
-    }
-
     @Transactional
     public IdDto updateBoard(Long loginId, Long boardId, BoardUpdateRequest boardUpdateRequest) {
 
@@ -93,22 +80,6 @@ public class BoardService {
         verifyOwner(loginId, board);
 
         board.softDelete();
-    }
-
-
-    @Transactional
-    public void addPlaytime(Long boardId, Long playtime) {
-        boardRepository.addPlaytime(playtime, boardId);
-    }
-
-    @Transactional
-    public void upBoardViews(Long boardId) {
-            boardRepository.addViews(boardId, 1L);
-    }
-
-    @Transactional
-    public void upAddViews(Long boardId) {
-        boardRepository.addAdViews(boardId, 1L);
     }
 
     private static List<Long> getAdTimes(List<String> adUrl) {

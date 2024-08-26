@@ -1,5 +1,6 @@
 package videoservice.domain.account.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import videoservice.domain.account.entity.Account;
@@ -18,8 +19,10 @@ public class AccountProfileResponse {
 
     private Gender gender;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd::HH:mm:ss")
     private LocalDateTime createdAt;
 
     public static AccountProfileResponse of(Account account) {

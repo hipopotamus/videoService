@@ -27,9 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static videoservice.utility.ApiDocumentUtils.getRequestPreProcessor;
 import static videoservice.utility.ApiDocumentUtils.getResponsePreProcessor;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 @AutoConfigureRestDocs
 class WatchHistoryControllerTest {
 
@@ -76,7 +76,7 @@ class WatchHistoryControllerTest {
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         requestHeaders(
-                                headerWithName("Authorization").description("JWT 토큰").attributes(key("constraints").value("JWT Form"))
+                                headerWithName("Authorization").description("JWT").attributes(key("constraints").value("JWT Form"))
                         ),
                         requestFields(
                                 fieldWithPath("boardId").description("게시물 ID").attributes(key("constraints").value("NotNull")),

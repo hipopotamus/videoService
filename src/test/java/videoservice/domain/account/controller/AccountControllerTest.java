@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,9 +30,12 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static videoservice.utility.ApiDocumentUtils.getRequestPreProcessor;
 import static videoservice.utility.ApiDocumentUtils.getResponsePreProcessor;
 
@@ -62,7 +68,6 @@ class AccountControllerTest {
         LoginDto loginDto = new LoginDto(email, password);
         String content = objectMapper.writeValueAsString(loginDto);
 
-
         //when
         ResultActions actions = mockMvc.perform(
                 post("/login")
@@ -70,7 +75,6 @@ class AccountControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         );
-
 
         //then
         actions
@@ -81,7 +85,7 @@ class AccountControllerTest {
                         getResponsePreProcessor(),
                         requestFields(
                                 List.of(
-                                        fieldWithPath("email").description("이메일").attributes(key("constraints").value("none")),
+                                        fieldWithPath("email").description("이메일 주소").attributes(key("constraints").value("none")),
                                         fieldWithPath("password").description("비밀번호").attributes(key("constraints").value("none"))
                                 )
                         ),
@@ -124,7 +128,7 @@ class AccountControllerTest {
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         requestFields(
-                                fieldWithPath("email").description("이메일 주소").attributes(key("constraints").value("EmailForm")),
+                                fieldWithPath("email").description("이메일 주소").attributes(key("constraints").value("Email Form")),
                                 fieldWithPath("password").description("비밀번호").attributes(key("constraints").value("NotBlank, Length(min=8, max=30)")),
                                 fieldWithPath("nickname").description("닉네임").attributes(key("constraints").value("NotBlank, Length(min=2, max=20)")),
                                 fieldWithPath("gender").description("성별").attributes(key("constraints").value("NotNull")),
@@ -204,7 +208,7 @@ class AccountControllerTest {
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andDo(document("accountModify",
+                .andDo(document("accountUpdate",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         requestHeaders(
@@ -242,6 +246,55 @@ class AccountControllerTest {
                         getResponsePreProcessor(),
                         requestHeaders(
                                 headerWithName("Authorization").description("JWT").attributes(key("constraints").value("JWT Form"))
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("계정 ID 목록 조회_성공")
+    void findAccountIdList_Success() throws Exception {
+        // given
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("createdAt").descending());
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/accounts")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize()))
+                        .param("sort", "createdAt,desc")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.totalPages").isNumber())
+                .andExpect(jsonPath("$.totalElements").isNumber())
+                .andExpect(jsonPath("$.first").isBoolean())
+                .andExpect(jsonPath("$.last").isBoolean())
+                .andExpect(jsonPath("$.size").value(pageable.getPageSize()))
+                .andExpect(jsonPath("$.pageNumber").isNumber())
+                .andExpect(jsonPath("$.numberOfElements").isNumber())
+                .andDo(document("accountIdList",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        queryParameters(
+                                parameterWithName("page").description("페이지 번호").attributes(key("constraints").value("Default=0")).optional(),
+                                parameterWithName("size").description("페이지 크기").attributes(key("constraints").value("Default=20")).optional(),
+                                parameterWithName("sort").description("정렬 기준").attributes(key("constraints").value("Default=createdAt,desc")).optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("content[]").description("계정 ID 리스트"),
+                                fieldWithPath("content[].accountId").description("계정 ID"),
+                                fieldWithPath("totalPages").description("전체 페이지 수"),
+                                fieldWithPath("totalElements").description("전체 요소 수"),
+                                fieldWithPath("first").description("첫 번째 페이지 여부"),
+                                fieldWithPath("last").description("마지막 페이지 여부"),
+                                fieldWithPath("size").description("페이지 크기"),
+                                fieldWithPath("pageNumber").description("현재 페이지 번호"),
+                                fieldWithPath("numberOfElements").description("현재 페이지의 요소 수"),
+                                fieldWithPath("sorted").description("정렬 여부")
                         )
                 ));
     }
