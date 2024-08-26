@@ -14,8 +14,8 @@ import videoservice.global.argumentresolver.LoginId;
 import videoservice.global.dto.IdDto;
 
 @RestController
-@RequestMapping("/watchHistory")
 @RequiredArgsConstructor
+@RequestMapping("/watchHistory")
 public class WatchHistoryController {
 
     private final WatchHistoryService watchHistoryService;

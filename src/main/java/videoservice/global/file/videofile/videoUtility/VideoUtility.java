@@ -45,6 +45,7 @@ public class VideoUtility {
 
         String originalFilename = image.getOriginalFilename();
         int dotIndex = originalFilename.lastIndexOf(".");
+
         return UUID.randomUUID() + originalFilename.substring(dotIndex);
     }
 

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import videoservice.domain.account.dto.AccountAddRequest;
-import videoservice.domain.account.dto.AccountDetailResponse;
+import videoservice.domain.account.dto.AccountProfileResponse;
 import videoservice.domain.account.dto.AccountIdResponse;
 import videoservice.domain.account.dto.AccountModifyRequest;
 import videoservice.domain.account.service.AccountService;
@@ -17,8 +17,8 @@ import videoservice.global.dto.IdDto;
 import videoservice.global.dto.PageDto;
 
 @RestController
-@RequestMapping("/accounts")
 @RequiredArgsConstructor
+@RequestMapping("/accounts")
 public class AccountController {
 
     private final AccountService accountService;
@@ -32,18 +32,18 @@ public class AccountController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<AccountDetailResponse> profileDetails(@LoginId Long loginId) {
+    public ResponseEntity<AccountProfileResponse> profileDetails(@LoginId Long loginId) {
 
-        AccountDetailResponse accountDetailResponse = accountService.findProfile(loginId);
+        AccountProfileResponse accountProfileResponse = accountService.findProfile(loginId);
 
-        return new ResponseEntity<>(accountDetailResponse, HttpStatus.OK);
+        return new ResponseEntity<>(accountProfileResponse, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<IdDto> accountModify(@LoginId Long loginId,
+    public ResponseEntity<IdDto> accountUpdate(@LoginId Long loginId,
                                                @RequestBody AccountModifyRequest accountModifyRequest) {
 
-        IdDto idDto = accountService.modifyAccount(loginId, accountModifyRequest);
+        IdDto idDto = accountService.updateAccount(loginId, accountModifyRequest);
 
         return new ResponseEntity<>(idDto, HttpStatus.OK);
     }
@@ -57,12 +57,13 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<PageDto<AccountIdResponse>> accountList
+    public ResponseEntity<PageDto<AccountIdResponse>> accountIdList
             (@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        PageDto<AccountIdResponse> accountIdResponseList = accountService.findAccounts(pageable);
+        PageDto<AccountIdResponse> accountIdResponseList = accountService.findAccountIdList(pageable);
 
         return new ResponseEntity<>(accountIdResponseList, HttpStatus.OK);
     }
 
 }
+

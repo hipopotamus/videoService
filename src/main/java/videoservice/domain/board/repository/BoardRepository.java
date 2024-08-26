@@ -21,7 +21,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByIdWithAccount(@Param("boardId") Long boardId);
 
     @Query("select board from Board board join fetch board.account where board.deleted = false ")
-    Page<Board> findStatisticList(Pageable pageable);
+    Page<Board> boardPageWithAccount(Pageable pageable);
 
     @Modifying
     @Query("update Board board " +
@@ -33,7 +33,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("update Board board " +
             "set board.adViews = board.adViews + :adViews " +
             "where board.id = :boardId and board.deleted = false")
-    void addAddViews(@Param("boardId") Long boardId, @Param("adViews") Long adViews);
+    void addAdViews(@Param("boardId") Long boardId, @Param("adViews") Long adViews);
 
     @Modifying
     @Query("update Board board " +

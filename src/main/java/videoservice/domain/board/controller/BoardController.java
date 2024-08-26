@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
-import videoservice.domain.board.dto.BoardStatisticListResponse;
+import videoservice.domain.board.dto.BoardStatisticsListResponse;
 import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.service.BoardService;
 import videoservice.global.argumentresolver.LoginId;
@@ -18,8 +18,8 @@ import videoservice.global.dto.IdDto;
 import videoservice.global.dto.PageDto;
 
 @RestController
-@RequestMapping("/boards")
 @RequiredArgsConstructor
+@RequestMapping("/boards")
 public class BoardController {
 
     private final BoardService boardService;
@@ -58,12 +58,12 @@ public class BoardController {
     }
 
     @GetMapping("/statistics")
-    public ResponseEntity<PageDto<BoardStatisticListResponse>> boardStatisticList
+    public ResponseEntity<PageDto<BoardStatisticsListResponse>> boardStatisticsList
             (@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        PageDto<BoardStatisticListResponse> boardStatisticResponses = boardService.findBoardStatistics(pageable);
+        PageDto<BoardStatisticsListResponse> boardStatisticsResponses = boardService.findBoardStatisticsList(pageable);
 
-        return new ResponseEntity<>(boardStatisticResponses, HttpStatus.OK);
+        return new ResponseEntity<>(boardStatisticsResponses, HttpStatus.OK);
     }
 
     @PostMapping("/statistics/views/{boardId}")

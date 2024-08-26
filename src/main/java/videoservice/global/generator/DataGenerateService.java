@@ -14,6 +14,7 @@ import videoservice.domain.video.repository.VideoRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,6 +30,21 @@ public class DataGenerateService {
     private final Random random  = new Random();
 
     public void generateAccount(long size) {
+        //sample
+        Optional<Account> optionalTestAccount = accountRepository.findByEmail("sample@sample.com");
+        if (optionalTestAccount.isEmpty()) {
+            Account testAccount = Account.builder()
+                    .email("sample@sample.com")
+                    .password("$2a$10$.s16a34pwL.M9NksIVSkIOasWPPsBB39blD1lOqinqhzoR7ri84d.")
+                    .nickname("sampleNickname")
+                    .gender(Gender.MALE)
+                    .birthDate(LocalDate.of(1993, 12, 22))
+                    .role(Role.USER)
+                    .build();
+
+            accountRepository.save(testAccount);
+        }
+
         for (int i = 0; i < size; i++) {
             String randomWord = UUID.randomUUID().toString().substring(0, 10);
 
@@ -75,9 +91,10 @@ public class DataGenerateService {
         List<Board> boardList = boardRepository.findAll();
 
         for (Board board : boardList) {
-            boardRepository.addViews(board.getId(), random.nextLong(10000));
-            boardRepository.addAddViews(board.getId(), random.nextLong(1000));
-            boardRepository.addPlaytime(random.nextLong(10000) + 30, board.getId());
+            long randomViews = random.nextLong(10000);
+            boardRepository.addViews(board.getId(), randomViews);
+            boardRepository.addAdViews(board.getId(), randomViews / 5);
+            boardRepository.addPlaytime(randomViews * 300 + 30, board.getId());
         }
     }
 

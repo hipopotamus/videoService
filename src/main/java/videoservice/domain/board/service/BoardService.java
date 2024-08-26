@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.adVideo.service.AdPickStrategy;
 import videoservice.domain.board.dto.BoardAddRequest;
 import videoservice.domain.board.dto.BoardDetailsResponse;
-import videoservice.domain.board.dto.BoardStatisticListResponse;
+import videoservice.domain.board.dto.BoardStatisticsListResponse;
 import videoservice.domain.board.dto.BoardUpdateRequest;
 import videoservice.domain.board.entity.Board;
 import videoservice.domain.board.repository.BoardRepository;
@@ -42,10 +42,10 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_VIDEO));
         Long videoLength = video.getLength();
 
-        List<String> adUrl = adPickStrategy.pickAdList(videoLength / 300);
-        List<Long> adTimes = getAdTimes(adUrl);
+        List<String> adVideoUrl = adPickStrategy.pickAdList(videoLength / 300);
+        List<Long> adTimes = getAdTimes(adVideoUrl);
 
-        Board board = boardAddRequest.toBoard(loginId, adUrl, adTimes);
+        Board board = boardAddRequest.toBoard(loginId, adVideoUrl, adTimes);
         Board saveBoard = boardRepository.save(board);
 
         return new IdDto(saveBoard.getId());
@@ -61,11 +61,11 @@ public class BoardService {
         return BoardDetailsResponse.of(board, breakPoint);
     }
 
-    public PageDto<BoardStatisticListResponse> findBoardStatistics(Pageable pageable) {
+    public PageDto<BoardStatisticsListResponse> findBoardStatisticsList(Pageable pageable) {
 
-        Page<BoardStatisticListResponse> pageBoardResponse =
-                boardRepository.findStatisticList(pageable)
-                        .map(BoardStatisticListResponse::of);
+        Page<BoardStatisticsListResponse> pageBoardResponse =
+                boardRepository.boardPageWithAccount(pageable)
+                        .map(BoardStatisticsListResponse::of);
 
         return new PageDto<>(pageBoardResponse);
     }
@@ -108,7 +108,7 @@ public class BoardService {
 
     @Transactional
     public void upAddViews(Long boardId) {
-        boardRepository.addAddViews(boardId, 1L);
+        boardRepository.addAdViews(boardId, 1L);
     }
 
     private static List<Long> getAdTimes(List<String> adUrl) {

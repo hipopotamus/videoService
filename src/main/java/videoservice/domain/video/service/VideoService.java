@@ -12,8 +12,8 @@ import videoservice.global.dto.IdDto;
 import java.io.IOException;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class VideoService {
 
     private final VideoRepository videoRepository;

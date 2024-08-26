@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class AccountDetailResponse {
+public class AccountProfileResponse {
 
     private String email;
 
@@ -22,8 +22,8 @@ public class AccountDetailResponse {
 
     private LocalDateTime createdAt;
 
-    public static AccountDetailResponse of(Account account) {
-        return AccountDetailResponse.builder()
+    public static AccountProfileResponse of(Account account) {
+        return AccountProfileResponse.builder()
                 .email(account.getEmail())
                 .nickname(account.getNickname())
                 .gender(account.getGender())

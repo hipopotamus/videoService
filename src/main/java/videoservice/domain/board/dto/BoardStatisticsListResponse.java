@@ -10,7 +10,7 @@ import videoservice.domain.board.entity.Board;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardStatisticListResponse {
+public class BoardStatisticsListResponse {
 
     private Long accountId;
 
@@ -22,8 +22,8 @@ public class BoardStatisticListResponse {
 
     private long totalPlaytime;
 
-    public static BoardStatisticListResponse of(Board board) {
-        return BoardStatisticListResponse.builder()
+    public static BoardStatisticsListResponse of(Board board) {
+        return BoardStatisticsListResponse.builder()
                 .accountId(board.getAccount().getId())
                 .boardId(board.getId())
                 .views(board.getViews())

@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.dto.AccountAddRequest;
-import videoservice.domain.account.dto.AccountDetailResponse;
+import videoservice.domain.account.dto.AccountProfileResponse;
 import videoservice.domain.account.dto.AccountIdResponse;
 import videoservice.domain.account.dto.AccountModifyRequest;
 import videoservice.domain.account.entity.Account;
@@ -18,8 +18,8 @@ import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountService {
 
     private final AccountRepository accountRepository;
@@ -37,16 +37,16 @@ public class AccountService {
         return new IdDto(savedAccount.getId());
     }
 
-    public AccountDetailResponse findProfile(Long accountId) {
+    public AccountProfileResponse findProfile(Long loginId) {
 
-        Account account = accountRepository.findById(accountId)
+        Account account = accountRepository.findById(loginId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ACCOUNT));
 
-        return AccountDetailResponse.of(account);
+        return AccountProfileResponse.of(account);
     }
 
     @Transactional
-    public IdDto modifyAccount(Long loginId, AccountModifyRequest accountModifyRequest) {
+    public IdDto updateAccount(Long loginId, AccountModifyRequest accountModifyRequest) {
 
         verifyDuplicateNickname(accountModifyRequest.getNickname());
 
@@ -68,9 +68,9 @@ public class AccountService {
         account.softDelete();
     }
 
-    public PageDto<AccountIdResponse> findAccounts(Pageable pageable) {
+    public PageDto<AccountIdResponse> findAccountIdList(Pageable pageable) {
 
-        Page<AccountIdResponse> pageAccountIdResponse = accountRepository.findAccountList(pageable)
+        Page<AccountIdResponse> pageAccountIdResponse = accountRepository.accountPage(pageable)
                 .map(AccountIdResponse::of);
 
         return new PageDto<>(pageAccountIdResponse);

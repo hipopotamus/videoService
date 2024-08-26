@@ -14,8 +14,8 @@ import videoservice.domain.adVideo.service.AdVideoService;
 import videoservice.global.dto.IdDto;
 
 @RestController
-@RequestMapping("/adVideos")
 @RequiredArgsConstructor
+@RequestMapping("/adVideos")
 public class AdVideoController {
 
     @Value("${dir}")

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/generate")
 @RequiredArgsConstructor
+@RequestMapping("/generate")
 public class DataGenerateController {
 
     private final DataGenerateService dataGenerateService;
@@ -32,7 +32,7 @@ public class DataGenerateController {
     }
 
     @PostMapping("/daily")
-    public ResponseEntity<String> generateDaily() {
+    public ResponseEntity<String> generateDailyChange() {
 
         dataGenerateService.generateDailyStats();
 

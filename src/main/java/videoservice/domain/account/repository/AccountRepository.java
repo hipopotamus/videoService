@@ -24,5 +24,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     boolean existsByNickname(@Param("nickname") String nickname);
 
     @Query("select account from Account account where account.deleted = false")
-    Page<Account> findAccountList(Pageable pageable);
+    Page<Account> accountPage(Pageable pageable);
 }

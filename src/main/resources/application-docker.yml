@@ -6,7 +6,7 @@ spring:
     name: videoservice
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3307/videoservice
+    url: jdbc:mysql://mysql-videoservice:3306/videoservice
     username: root
     password: 123456
   jpa:
@@ -15,6 +15,11 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
+#    defer-datasource-initialization: true
+#  sql:
+#    init:
+#      data-locations: classpath:static/db/data.sql
+#      mode: always
   servlet:
     multipart:
       max-file-size: 1000MB
@@ -24,6 +29,11 @@ spring:
       pageable:
         default-page-size: 10
         one-indexed-parameters: true
+
+dir : /app/resources/video/
+
+ffmpeg : /usr
+
 eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance.id:${random.value}}
@@ -31,15 +41,11 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
+      defaultZone: http://eurekaservice:8761/eureka
 
 jwt:
   secret-key: 28d93268-a80b-4594-918b-5926a79a49ed
   expiration: 36000000
   prefix: Bearer
   header: Authorization
-
-dir : /Users/hipo/Desktop/project/toy_project/video/videoservice/src/main/resources/video/
-
-ffmpeg : /opt/homebrew/Cellar/ffmpeg/7.0.2
 

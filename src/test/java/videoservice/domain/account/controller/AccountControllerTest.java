@@ -146,7 +146,7 @@ class AccountControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(
-                get("/accounts")
+                get("/accounts/profile")
                         .header("Authorization", jwt)
         );
 
@@ -178,7 +178,7 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("계정 수정_성공")
-    void accountModify_Success() throws Exception {
+    void accountUpdate_Success() throws Exception {
         // given
         Long accountId = 10001L;
         Account account = accountRepository.findById(accountId).get();

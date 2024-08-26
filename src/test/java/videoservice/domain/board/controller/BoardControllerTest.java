@@ -231,7 +231,7 @@ class BoardControllerTest {
 
     @Test
     @DisplayName("게시물 통계 목록 조회_성공")
-    void boardStatisticList_Success() throws Exception {
+    void boardStatisticsList_Success() throws Exception {
         // given
         Long accountId = 10001L;
         Account account = accountRepository.findById(accountId).get();
