@@ -9,7 +9,7 @@ import videoservice.domain.account.entity.Account;
 
 import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface AccountRepository extends JpaRepository<Account, Long>, AccountRepositoryCustom {
 
     @Query("select account from Account account where account.email = :email and account.deleted = false")
     Optional<Account> findByEmail(@Param("email") String email);

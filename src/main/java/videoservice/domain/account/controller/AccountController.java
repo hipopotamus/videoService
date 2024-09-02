@@ -16,6 +16,8 @@ import videoservice.global.argumentresolver.LoginId;
 import videoservice.global.dto.IdDto;
 import videoservice.global.dto.PageDto;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/accounts")
@@ -63,6 +65,14 @@ public class AccountController {
         PageDto<AccountIdResponse> accountIdResponseList = accountService.findAccountIdList(pageable);
 
         return new ResponseEntity<>(accountIdResponseList, HttpStatus.OK);
+    }
+
+    @GetMapping("/cursor")
+    public ResponseEntity<List<AccountIdResponse>> accountIdCursor(@RequestParam Long lastAccountId, @RequestParam int limit) {
+
+        List<AccountIdResponse> accountIdCursor = accountService.findAccountIdCursor(lastAccountId, limit);
+
+        return new ResponseEntity<>(accountIdCursor, HttpStatus.OK);
     }
 
 }

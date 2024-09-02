@@ -1,6 +1,7 @@
 package videoservice.global.generator;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import videoservice.domain.account.entity.Account;
@@ -13,10 +14,7 @@ import videoservice.domain.video.entity.Video;
 import videoservice.domain.video.repository.VideoRepository;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -28,6 +26,7 @@ public class DataGenerateService {
     private final BoardRepository boardRepository;
     private final VideoRepository videoRepository;
     private final Random random  = new Random();
+    private final JdbcTemplate jdbcTemplate;
 
     public void generateAccount(long size) {
         //sample
@@ -90,12 +89,15 @@ public class DataGenerateService {
 
         List<Board> boardList = boardRepository.findAll();
 
+        List<Object[]> batchArgs = new ArrayList<>();
+
         for (Board board : boardList) {
             long randomViews = random.nextLong(10000);
-            boardRepository.addViews(board.getId(), randomViews);
-            boardRepository.addAdViews(board.getId(), randomViews / 5);
-            boardRepository.addPlaytime(randomViews * 300 + 30, board.getId());
+            batchArgs.add(new Object[]{randomViews, randomViews / 5, randomViews * 300 + 30, board.getId()});
         }
+
+        String sql = "UPDATE board SET views = views + ?, ad_views = ad_views + ?, total_playtime = total_playtime + ? WHERE board_id = ? AND deleted = false";
+        jdbcTemplate.batchUpdate(sql, batchArgs);
     }
 
     private LocalDate getRandomBirthDate(int startYear, int endYear) {

@@ -9,6 +9,8 @@ import videoservice.domain.board.dto.BoardStatisticsListResponse;
 import videoservice.domain.board.repository.BoardRepository;
 import videoservice.global.dto.PageDto;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -38,5 +40,9 @@ public class BoardStatisticsService {
                         .map(BoardStatisticsListResponse::of);
 
         return new PageDto<>(pageBoardResponse);
+    }
+
+    public List<BoardStatisticsListResponse> findBoardStatisticsCursor(Long lastBoardId, int limit) {
+        return boardRepository.boardPageWithAccountByCursor(lastBoardId, limit);
     }
 }

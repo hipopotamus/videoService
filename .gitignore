@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### Custom ###
-!**/src/main/resources/video/
+!**/src/main/resources/video/!/Dockerfile

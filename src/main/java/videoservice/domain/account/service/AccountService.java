@@ -17,6 +17,8 @@ import videoservice.global.dto.PageDto;
 import videoservice.global.exception.BusinessLogicException;
 import videoservice.global.exception.ExceptionCode;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -74,6 +76,10 @@ public class AccountService {
                 .map(AccountIdResponse::of);
 
         return new PageDto<>(pageAccountIdResponse);
+    }
+
+    public List<AccountIdResponse> findAccountIdCursor(Long lastAccountId, int limit) {
+        return accountRepository.accountIdPageByCursor(lastAccountId, limit);
     }
 
     private void verifyDuplicateEmail(String email) {

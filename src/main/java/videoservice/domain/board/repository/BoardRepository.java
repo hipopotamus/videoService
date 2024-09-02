@@ -10,7 +10,7 @@ import videoservice.domain.board.entity.Board;
 
 import java.util.Optional;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
 
     @Query("select board from Board board " +
             "where board.id = :boardId and board.deleted = false ")

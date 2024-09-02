@@ -302,9 +302,6 @@ include::{snippets}/boardStatisticList/curl-request.adoc[]
 .http-request
 include::{snippets}/boardStatisticList/http-request.adoc[]
 
-.request-headers
-include::{snippets}/boardStatisticList/request-headers.adoc[]
-
 .query-parameters
 include::{snippets}/boardStatisticList/query-parameters.adoc[]
 

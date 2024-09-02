@@ -11,6 +11,8 @@ import videoservice.domain.board.dto.BoardStatisticsListResponse;
 import videoservice.domain.board.service.BoardStatisticsService;
 import videoservice.global.dto.PageDto;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/boards/statistics")
@@ -49,5 +51,13 @@ public class BoardStatisticsController {
         PageDto<BoardStatisticsListResponse> boardStatisticsResponses = boardStatisticsService.findBoardStatisticsList(pageable);
 
         return new ResponseEntity<>(boardStatisticsResponses, HttpStatus.OK);
+    }
+
+    @GetMapping("/cursor")
+    public ResponseEntity<List<BoardStatisticsListResponse>> boardStatisticsCursor(@RequestParam Long lastBoardId, @RequestParam int limit) {
+
+        List<BoardStatisticsListResponse> boardStatisticsCursor = boardStatisticsService.findBoardStatisticsCursor(lastBoardId, limit);
+
+        return new ResponseEntity<>(boardStatisticsCursor, HttpStatus.OK);
     }
 }

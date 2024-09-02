@@ -52,6 +52,12 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    //querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta' // Querydsl JPA 의존성
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta' // Querydsl APT 의존성
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     //jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
